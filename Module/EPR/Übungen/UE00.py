@@ -44,3 +44,5 @@ output = land + str(pruefziffer) + " "+ bankleitzahl + " " + kontonummer
 print("\nIBAN:")
 print(output)
 
+#35070024
+#0388249600
