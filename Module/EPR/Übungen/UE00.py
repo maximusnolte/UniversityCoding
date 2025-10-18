@@ -52,22 +52,22 @@ def IBAN():
 
 #Errors aus Aufgabe 2:
 
-def Name_Error():
+def Name_Error(): #Variable existiert nicht und es wird versucht zuzugreifen
     print(x)
 
-def Type_Error():
+def Type_Error(): #Man versucht z.B. einen String mit einem Int zu addieren
     x = "1"
     y = 2
     z = x+y
     print(z)
 
-def ZeroDivision_Error():
+def ZeroDivision_Error(): #Man darf nicht durch $0$ Teilen
     x = 0
     y = 2
     z = y/x
     print(z)
 
-def Syntax_Error():
+def Syntax_Error(): #Code nicht nach Syntax geschrieben
     #if x gleich y:
         print("z")
 
