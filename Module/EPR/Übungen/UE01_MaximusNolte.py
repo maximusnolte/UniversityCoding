@@ -1,4 +1,4 @@
-__author__ = '<8722674> , <Julian Maximus Nolte>'
+__author__ = '8722674, Julian Maximus Nolte'
 #! /venv/bin/python3.14
 
 # Aufgabe 2)
