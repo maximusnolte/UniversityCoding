@@ -1,3 +1,5 @@
+"""Programm zum Starten von kleineren Unterprogrammen der Aufgabe UE03"""
+
 __author__ = '8722674, Julian Maximus Nolte'
 #! /venv/bin/python3.14
 

@@ -1,7 +1,10 @@
+"""Modul um ganzzahlige-dezimal-Zahlen in Binär umzurechnen"""
+
 __author__ = '8722674, Julian Maximus Nolte'
 #! /venv/bin/python3.14
 
 def dezimal_zu_binär(number):
+    """Wandelt eine ganzzahlige-Dezimal-Zahl in eine Binär-Zahl um"""
     original = number
     out = ""
     p = 1

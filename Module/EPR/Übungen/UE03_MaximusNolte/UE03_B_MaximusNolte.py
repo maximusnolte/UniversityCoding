@@ -1,12 +1,16 @@
+"""Programm um ein Sierpinski-Dreieck mit dem Chaos-Game-Verfahren zu zeichnen anhand von eingegebenen Parametern."""
+
 __author__ = '8722674, Julian Maximus Nolte'
 #! /venv/bin/python3.14
 
-import turtle as t
 import random as rnd
 import time
 
+import turtle as t
+
+
 def reset():
-    """Wird benötigt um das Turtle-Fenster zurückzusetzen nach Abschluss des Programms."""
+    """Setzt das Fenster nach dem Abschluss der dreieckFraktal Methode"""
     t.TurtleScreen._RUNNING = True
     try:
         t.bye()
