@@ -22,6 +22,7 @@ def dezimal_to_binary(dezimal):
     end_t = time.perf_counter()
     print(f"(in {end_t - start_t:.10f} Sekunden)")
 
+
 if __name__ == '__main__':
     while True:
         dezimal = input("Bitte Dezimal: ")
