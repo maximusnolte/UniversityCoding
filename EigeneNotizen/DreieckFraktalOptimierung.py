@@ -46,4 +46,4 @@ def fast_fractal(iterations, size=400):
 
     pygame.quit()
 if __name__ == '__main__':
-    fast_fractal(500000,800) #ab 50.000 iterationen keine nennenswerte Qualitätsverbesserung
+    fast_fractal(100000,800) #ab 50.000 iterationen keine nennenswerte Qualitätsverbesserung
