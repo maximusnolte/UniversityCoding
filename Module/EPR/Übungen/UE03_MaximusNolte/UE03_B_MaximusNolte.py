@@ -1,6 +1,6 @@
 """Programm um ein Sierpinski-Dreieck mit dem Chaos-Game-Verfahren zu zeichnen anhand von eingegebenen Parametern."""
 
-__author__ = '8722674, Julian Maximus Nolte'
+__author__ = '8722674, Nolte'
 #! /venv/bin/python3.14
 
 import random as rnd

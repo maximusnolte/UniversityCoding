@@ -24,6 +24,7 @@ def create_map():
 
 def place_element(game_map, element):
     """Platziert ein Element zufällig auf der Karte"""
+    element = element[0]
     rnd_y = random.randint(0, len(game_map)-1)
     rnd_x = random.randint(1, len(game_map[0])-1)
 
@@ -162,7 +163,6 @@ def treasure_hunter_game():
         else:
             print("Spiel beendet... :(")
             sys.exit()
-
 
 if __name__ == '__main__':
     treasure_hunter_game()

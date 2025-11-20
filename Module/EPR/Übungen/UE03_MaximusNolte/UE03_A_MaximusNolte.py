@@ -1,6 +1,6 @@
 """Programm welches mit dem Nutzer zahlen-Raten zwischen -10 und 30 spielt"""
 
-__author__ = '8722674, Julian Maximus Nolte'
+__author__ = '8722674, Nolte'
 #! /venv/bin/python3.14
 
 import random

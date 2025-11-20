@@ -1,6 +1,6 @@
 """Programm zum Starten von kleineren Unterprogrammen der Aufgabe UE03"""
 
-__author__ = '8722674, Julian Maximus Nolte'
+__author__ = '8722674, Nolte'
 #! /venv/bin/python3.14
 
 import UE03_A_MaximusNolte as aufgabe_a
