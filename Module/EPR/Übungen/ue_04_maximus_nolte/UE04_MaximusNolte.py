@@ -7,10 +7,21 @@
 """
 
 import sys
-from ue_o4_maximus_nolte_functions import (create_map, fill_map, print_map,
-                                            manhattan_distance, move_player)
+from UE04_MaximusNolte_Functions import (create_map, fill_map, print_map,
+                                         manhattan_distance, move_player)
 def treasure_hunter_game():
-    """Hauptfunktion für das Schatzsuchspiel"""
+    """Hauptfunktion für das Schatzsuchspiel.
+        Die Karte wird erstellt und mit Hindernissen und einem Schatz gefüllt.
+        Der Spieler kann sich mit 'u', 'o', 'r', 'l' bewegen und versucht,
+        den Schatz zu finden, da dieser unsichtbar ist, ebenso wie die Hindernisse.
+        Die Hindernisse werden nach dem Entdecken dauerhaft sichtbar gemacht.
+        Die Distanz zum Schatz und die Anzahl der Versuche werden angezeigt.
+        Das Spiel endet, wenn der Spieler den Schatz findet oder
+        die maximale Anzahl von 10 Versuchen erreicht ist.
+        Das Spiel kann auch jederzeit durch Eingabe von 'q' beendet werden.
+        Bei einem ungültigen Zug bleibt der Spieler an derselben Position und
+        die Anzahl der Versuche wird nicht erhöht.
+    """
     game_map = create_map()
 
     obstacle_count = 1
