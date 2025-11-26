@@ -4,8 +4,8 @@ __author__ = '8722674, Nolte'
 # Aufgabe 2)
 #a)
 def aufgabe_zwei_a(zahl1, zahl2):
-    # Eine Funktion, welche zwei Ganzzahlen entgegennimmt und über beiden Zahlen und
-    # den dazwischen liegenden Zahlen die Summe bildet
+    """Eine Funktion, welche zwei Ganzzahlen entgegennimmt und über beiden Zahlen und
+    den dazwischen liegenden Zahlen die Summe bildet"""
     ergebnis = 0
     if zahl1 > zahl2:
         temp = zahl1
@@ -20,11 +20,12 @@ def aufgabe_zwei_a(zahl1, zahl2):
         # aufgabe_zwei_a(5,5) -> 5
 
 def aufgabe_zwei_b(zahl):
-    #Eine Funktion, die eine Zahl (ungleich 0) so lange halbiert, bis sie nicht mehr darzustellen ist
-    #und die Anzahl an benötigter schritte angibt
-    if(zahl != 0):
+    """Eine Funktion, die eine Zahl (ungleich 0) so lange halbiert, bis sie nicht mehr darzustellen ist
+        und die Anzahl an benötigter schritte angibt
+    """
+    if zahl != 0:
         ergebnis = zahl
-        while(zahl > 0):
+        while zahl > 0:
             zahl = zahl / 2
             ergebnis += 1
     else: ergebnis = "Eingegebene Zahl war 0"
@@ -106,8 +107,10 @@ def aufgabe_zwei_e(beginn, ende, schrittweite):
         # aufgabe_zwei_e(5,0,1) -> #
 if __name__ == '__main__':
     #print(aufgabe_zwei_a(-1, 5) )
+
     #print(aufgabe_zwei_b(2))
     #aufgabe_zwei_c(3,3)
+
     #print(aufgabe_zwei_d(10))
     #aufgabe_zwei_e(4,10,3)
     pass

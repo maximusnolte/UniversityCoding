@@ -4,8 +4,9 @@ __author__ = '8722674, Nolte'
 # Aufgabe 2)
 def schalt_jahr_checker():
 
-    #Liest eine Jahreszahl ein und prüft, ob es sich um ein Schaltjahr handelt.
-    #Nimmt nur gültige ganze Zahlen an.
+    """Liest eine Jahreszahl ein und prüft, ob es sich um ein Schaltjahr handelt.
+        Nimmt nur gültige ganze Zahlen an
+    """
 
     while True:
         jahr = input("Gib dein Jahr ein: ")
@@ -23,9 +24,9 @@ def schalt_jahr_checker():
 
 # Aufgabe 3)
 def katzen_futter_berater():
-
-    #Liest das Alter und die Haltungsart einer Katze ein und gibt eine Futterempfehlung.
-    #Akzeptiert nur gültige Eingaben und wiederholt bei Fehlern.
+    """Liest das Alter und die Haltungsart einer Katze ein und gibt eine Futterempfehlung.
+        Akzeptiert nur gültige Eingaben und wiederholt bei Fehlern.
+    """
 
     gueltige_alter = ["jung", "erwachsen", "senior"]
     gueltige_haltungsarten = ["haus", "frei"]
