@@ -143,13 +143,59 @@ def check_edge_count(knots_in, directed=False):
     else:
         return False
 
-turtle.setup(1000,1000)
-turtle.speed(0)
+def append_knot(knot_in, knots_in):
+    """Appends a new knot to the knots dictionary."""
+    if knot_in not in knots_in:
+        knot_in = {knot_in: ()}
+        knots_in.update(knot_in)
+        return knots_in
+    return None
 
-offset = [-500, 100]
+def set_knot_connections(knot_in, knots_in, new_connections):
+    """Sets new connections for a given knot."""
+    if knot_in in knots_in:
+        knots_in[knot_in] = new_connections
+        return knots_in
+    return None
 
-draw_knots(knots, knots_positions, 10, offset)
-draw_connections(knots, knots_positions, True, offset)
-draw_legend([200,-200])
-finish_drawing()
-print(check_edge_count(knots, True))
+def generate_knot_positions(knots_in, distance=100):
+    """Generates positions for knots in a grid layout."""
+    cols = math.ceil(math.sqrt(len(knots_in)))
+
+    positions = []
+    for i in range(len(knots_in)):
+        row = i // cols
+        col = i % cols
+        positions.append((col * distance, row * distance))
+    return positions
+
+def knot_input_handeler():
+    directed = None
+    while directed is None:
+        input_string = input("Directed or Undirected graph? (y/n): ").strip().lower()
+        if input_string == 'y':
+            directed = True
+        elif input_string == 'n':
+            directed = False
+        else:
+            print("Invalid input. Please enter 'y' or 'n'.")
+            directed = None
+
+
+
+#print(check_edge_count(knots, True))
+
+if __name__ == '__main__':
+
+
+    pass
+    #knots_positions = generate_knot_positions(knots, 50)
+    #turtle.setup(1000,1000)
+    #turtle.speed(0)
+
+    #offset = [0, 0]
+
+    #draw_knots(knots, knots_positions, 10, offset)
+    #draw_connections(knots, knots_positions, True, offset)
+    #draw_legend([200,-200])
+    #finish_drawing()
