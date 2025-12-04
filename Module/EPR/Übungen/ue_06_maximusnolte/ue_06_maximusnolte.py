@@ -1,11 +1,10 @@
 import math
-import turtle as turtle
+import turtle as t
 from copy import deepcopy
 
 
 def calculate_outgoing_degree(knot_in, knots_in):
     """Calculates the outgoing degree of a knot.
-    asdjhasdjahsdkjashd#
     """
     connections = knots_in[knot_in]
     return len(connections) + 1
@@ -32,9 +31,9 @@ def draw_knot(knot, position, color, size, offset=(0, 0)):
     """Draws a single knot at a given position."""
     print(f"Drawing Knot: ({knot}) at position: {position[0] + offset[0]}, "
           f"{position[1] + offset[1]} with color: {color}")
-    turtle.teleport(position[0] + offset[0], position[1] + offset[1])
-    turtle.dot(size, color)
-    turtle.write(knot)
+    t.teleport(position[0] + offset[0], position[1] + offset[1])
+    t.dot(size, color)
+    t.write(knot)
 
 
 def draw_connection(start_position, end_position, directional=False,
@@ -42,14 +41,14 @@ def draw_connection(start_position, end_position, directional=False,
     """Draws a connection between two knots."""
     angle = calculate_angle(start_position, end_position)
     print(f"Drawing Connection from: {start_position} to: {end_position}")
-    turtle.teleport(start_position[0] + offset[0],
+    t.teleport(start_position[0] + offset[0],
                     start_position[1] + offset[1])
-    turtle.setheading(angle)
-    turtle.pendown()
-    turtle.goto(end_position[0] + offset[0], end_position[1] + offset[1])
+    t.setheading(angle)
+    t.pendown()
+    t.goto(end_position[0] + offset[0], end_position[1] + offset[1])
     if directional:
-        turtle.stamp()
-    turtle.penup()
+        t.stamp()
+    t.penup()
 
 
 def get_knot_color(knot_in, knots_in):
@@ -66,24 +65,24 @@ def get_knot_color(knot_in, knots_in):
 # Draw connections
 def finish_drawing():
     """Finalizes the drawing."""
-    turtle.hideturtle()
-    turtle.done()
+    t.hideturtle()
+    t.done()
 
 
 def draw_knots(knots_in, knots_positions_in, size=10, offset=(0, 0)):
     """Draws a dict of knots at given positions."""
-    turtle.tracer(0)
+    t.tracer(0)
     for knot in knots_in:
         position = knots_positions_in[knot]
         color = get_knot_color(knot, knots_in)
         draw_knot(knot, position, color, size, offset)
-    turtle.update()
+    t.update()
 
 
 def draw_connections(knots_in, knots_positions_in, directional=False,
                      offset=(0, 0)):
     """Draws connections between knots."""
-    turtle.tracer(1)
+    t.tracer(1)
     for knot in knots_in:
         start_position = knots_positions_in[knot]
         connections = knots_in[knot]
@@ -94,19 +93,19 @@ def draw_connections(knots_in, knots_positions_in, directional=False,
 
 def draw_legend(position=(200, 200), offset=20):
     """Draws a legend for the knot colors."""
-    turtle.tracer(0)
-    turtle.teleport(position[0], position[1])
-    turtle.write("Legend:")
-    turtle.teleport(position[0], position[1] - offset)
-    turtle.dot(10, "red")
-    turtle.write(" Knoten mit Ausgangsgrad 1")
-    turtle.teleport(position[0], position[1] - (2 * offset))
-    turtle.dot(10, "green")
-    turtle.write(" Knoten mit Eingangsgrad 0")
-    turtle.teleport(position[0], position[1] - (3 * offset))
-    turtle.dot(10, "blue")
-    turtle.write(" Knoten mit sonstigen Graden")
-    turtle.update()
+    t.tracer(0)
+    t.teleport(position[0], position[1])
+    t.write("Legend:")
+    t.teleport(position[0], position[1] - offset)
+    t.dot(10, "red")
+    t.write(" Knoten mit Ausgangsgrad 1")
+    t.teleport(position[0], position[1] - (2 * offset))
+    t.dot(10, "green")
+    t.write(" Knoten mit Eingangsgrad 0")
+    t.teleport(position[0], position[1] - (3 * offset))
+    t.dot(10, "blue")
+    t.write(" Knoten mit sonstigen Graden")
+    t.update()
 
 
 def calculate_edge_count(knots_in, directed=False):
@@ -129,8 +128,7 @@ def check_edge_count(knots_in, directed=False):
     edge_count = calculate_edge_count(knots_in, directed)
     if edge_count == len(knots_in) - 1:
         return True
-    else:
-        return False
+    return False
 
 
 def append_knot(knot_in, knots_in):
@@ -153,20 +151,23 @@ def set_knot_connections(knot_in, knots_in, new_connections):
 
 def generate_knot_positions(knots_in, distance=100):
     """Generates positions for knots in a grid layout."""
+    print("Generating positions for knots...")
     cols = math.ceil(math.sqrt(len(knots_in)))
 
-    positions = []
-    for i in range(len(knots_in)):
+    positions = {}
+    for i, knot in enumerate(knots_in):
         row = i // cols
         col = i % cols
-        positions.append((col * distance, row * distance))
+        positions.update({knot : (col * distance, row * distance)})
+    print(f"Finished generating positions for knots. Positions: {positions}")
     return positions
 
 
 def convert_string_connections(input_string, knots):
+    """Converts a string representation of connections into a dict."""
     print("Converting string to connections...")
 
-    input_string = input_string.replace(" ", "")
+    input_string = input_string.strip()
     if ";" not in input_string:
         print("Invalid input format. Please separate entries with semicolons.")
         return None
@@ -174,14 +175,21 @@ def convert_string_connections(input_string, knots):
     entries = input_string.split(';')
 
     for entry in entries:
+        if entry == "":
+            continue
         if ":" not in entry or entry.count(":") != 1:
             print(f"Invalid entry: {entry}")
             return None
 
-        knot, connected_knots = entry.split(":")
+        knot, connected_knots_raw = entry.split(":")
 
-        connected_knots = tuple(k for k in connected_knots.split(",") if k != "")
+        connected_knots_raw = connected_knots_raw.split(",")
+        connected_knots = []
+        for connection in connected_knots_raw:
+            if connection != "":
+                connected_knots.append(connection)
 
+        connected_knots = tuple(connected_knots)
 
         if knot not in knots:
             print(f"Knot {knot} does not exist.")
@@ -249,24 +257,25 @@ def option_handler(option):
                 input_string = input("Knot Positions >")
                 if ";" in input_string:
                     entries = input_string.split(';')
-                    print(f"Entries: {entries}")
                     for i, entry in enumerate(entries):
                         entry = entry.strip().split(",")
-                        if len(entry) != 2:
-                            print(
-                                f"Invalid entry (must have exactly two values): {entry}")
-                            knots = None
-                            break
-
-                        x_position = entry[0]
-                        y_position = entry[1]
-                        if x_position.isdigit() and y_position.isdigit():
-                            knots.update(
-                                {i: (int(x_position), int(y_position))})
+                        if entry == ['']:
+                            continue
                         else:
-                            print(f"Invalid entry ({x_position}, "
+                            if len(entry) != 2:
+                                print(f"Invalid entry (must have exactly two values): {entry}")
+                                knots = None
+                                break
+                            x_position = entry[0]
+                            y_position = entry[1]
+                            if x_position.isdigit() and y_position.isdigit():
+                                append_knot(i, knots)
+                                set_knot_connections(i, knots, (int(x_position), int(y_position)))
+                                print(f"Added knot {i} with position ({x_position}, {y_position})")
+                            else:
+                                print(f"Invalid entry ({x_position}, "
                                   f"{y_position}): {entry} got non -integer values")
-                            knots = None
+                                knots = None
                 else:
                     print(
                         "Invalid input format. Please separate entries with semicolons.")
@@ -281,7 +290,7 @@ def input_handler():
     print("----Graph Type----")
     directed = None
     while directed is None:
-        input_string = input("Directed or Undirected graph? (y/n): ").lower()
+        input_string = input("Directed graph? (y/n): ").lower()
         if input_string == 'y':
             directed = True
         elif input_string == 'n':
@@ -294,7 +303,7 @@ def input_handler():
     print("----Input Knots----")
     print("Options:")
     print(
-        "1. Automatically Generate Knots")  # TODO Automatically generate knots Function
+        "1. Automatically Generate Knots")
     print(
         "2. Input Knots Manually (as a valid list like 1,2,3...), seperated by semicolons")
     print(
@@ -325,35 +334,20 @@ def input_handler():
 
     print("----FinalResult----")
     print(directed, knots)
-
-
-# print(check_edge_count(knots, True))
-
-def test_shit():
-    knots = {
-        0: (1, 2, 3),
-        1: (4,),
-        2: (5,),
-        3: (6,),
-        4: (7,),
-        5: (8,),
-        6: (),
-        7: (9,),
-        8: (),
-        9: ()
-    }
-
-    knots_positions = generate_knot_positions(knots, 100)
-    turtle.setup(1000, 1000)
-    turtle.speed(0)
-
-    knots_offset = [0, 0]
-
-    draw_knots(knots, knots_positions, 10, knots_offset)
-    draw_connections(knots, knots_positions, True, knots_offset)
-    draw_legend([200, -200])
-    finish_drawing()
+    return directed, knots
 
 
 if __name__ == '__main__':
-    input_handler()
+    directed_input, knots_input = input_handler()
+    generated_knots_positions = generate_knot_positions(knots_input, 100)
+
+    t.setup(1000, 1000)
+    t.speed(0)
+
+    knots_offset = [0, 0]
+
+    draw_knots(knots_input, generated_knots_positions, 10, knots_offset)
+    draw_connections(knots_input, generated_knots_positions, directed_input,
+                     knots_offset)
+    draw_legend([200, -200])
+    finish_drawing()
