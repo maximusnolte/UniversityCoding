@@ -50,12 +50,7 @@ def generate_node_positions(nodes_in, distance=100):
     return positions
 
 
-def convert_string_connections(input_string, nodes):
-    """Modifies a given Node-Dictionary with new Connections.
-        :param input_string: str - The string representation of connections.
-        :param nodes: dict - The existing nodes dictionary.
-        :return: dict - A dictionary of nodes with their connections.
-    """
+def convert_string_connections(input_string, nodes, directional):
     print("Converting string to connections...")
 
     input_string = input_string.strip()
@@ -69,30 +64,51 @@ def convert_string_connections(input_string, nodes):
         entry = entry.strip()
         if entry == "":
             continue
+
         if ":" not in entry or entry.count(":") != 1:
             print(f"Invalid entry: {entry}")
             return None
 
-        node, connected_nodes_raw = entry.split(":")
-        connected_nodes_raw = connected_nodes_raw.strip()
+        node, raw_connections = entry.split(":")
+        node = node.strip()
+        raw_connections = raw_connections.strip()
 
-        connected_nodes_raw = connected_nodes_raw.split(",")
         connected_nodes = []
-        for connection in connected_nodes_raw:
-            if connection != "":
-                connected_nodes.append(connection)
+        for c in raw_connections.split(","):
+            c = c.strip()
+            if c != "":
+                connected_nodes.append(c)
 
         connected_nodes = tuple(connected_nodes)
 
+        # Node existiert nicht
         if node not in nodes:
             print(f"Knot {node} does not exist.")
             return None
 
+        # Setze die direkten Verbindungen
         nodes[node] = connected_nodes
+
+        # Falls directional=True: Rückverbindungen setzen
+        if not directional:
+            for cnode in connected_nodes:
+                if cnode not in nodes:
+                    print(f"Knot {cnode} does not exist.")
+                    return None
+
+                # alte connections holen
+                existing = list(nodes[cnode])
+
+                # rückverbindung hinzufügen falls nicht existiert
+                if node not in existing:
+                    existing.append(node)
+
+                nodes[cnode] = tuple(existing)
 
     print("Converted connections:")
     print(nodes)
     return nodes
+
 
 
 def generate_node_dict(number_of_nodes):
@@ -239,7 +255,7 @@ def input_handler():
     while connections is None:
         input_string = input("Connections >")
         input_string = input_string.strip()
-        connections = convert_string_connections(input_string, nodes)
+        connections = convert_string_connections(input_string, nodes, directed)
     nodes = connections
 
     print("----FinalResult----")
@@ -256,5 +272,5 @@ if __name__ == '__main__':
     draw_nodes(nodes_input, generated_nodes_positions,10, nodes_offset)
     draw_connections(nodes_input, generated_nodes_positions, directed_input,
                      nodes_offset)
-    draw_legend([200, -200])
+    draw_legend(calculate_edge_count(nodes_input,directed_input))
     finish_drawing()

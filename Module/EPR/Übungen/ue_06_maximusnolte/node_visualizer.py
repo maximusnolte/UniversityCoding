@@ -8,7 +8,7 @@ def calculate_outgoing_degree(node_in, nodes_in):
         :return: int - The outgoing degree of the node.
     """
     connections = nodes_in[node_in]
-    return len(connections) + 1
+    return len(connections)
 
 
 def calculate_incoming_degree(node_in, nodes_in):
@@ -79,9 +79,9 @@ def get_node_color(node_in, nodes_in):
     """
     outgoing_degree = calculate_outgoing_degree(node_in, nodes_in)
     incoming_degree = calculate_incoming_degree(node_in, nodes_in)
-    if outgoing_degree == 1:
+    if outgoing_degree == 0 and not incoming_degree == 0:
         return "red"
-    if incoming_degree == 0:
+    if incoming_degree == 0 and not outgoing_degree == 0:
         return "green"
     return "blue"
 
@@ -125,23 +125,29 @@ def draw_connections(nodes_in, nodes_positions_in, directional=False,
             draw_connection(start_position, end_position, directional, offset)
 
 
-def draw_legend(position=(200, 200), offset=20):
+def draw_legend(connection_count, position=(350, 400), offset=20):
     """Draws a legend for the node colors.
+        :param connection_count: int - The number of connections in the graph.
         :param position: Position to draw the legend at. (default: (200, 200))
         :param offset: Offset between legend entries. (default: 20)
     """
+    print(f"Drawing Legend at: {position[0]} to {position[1]}")
     t.tracer(0)
     t.teleport(position[0], position[1])
-    t.write("Legend:")
+    t.write("Legende:")
     t.teleport(position[0], position[1] - offset)
     t.dot(10, "red")
-    t.write(" Knoten mit Ausgangsgrad 1")
+    t.write(" End-Knoten mit Ausgangsgrad 0")
     t.teleport(position[0], position[1] - (2 * offset))
     t.dot(10, "green")
-    t.write(" Knoten mit Eingangsgrad 0")
+    t.write(" Start-Knoten mit Eingangsgrad 0")
     t.teleport(position[0], position[1] - (3 * offset))
     t.dot(10, "blue")
     t.write(" Knoten mit sonstigen Graden")
+    t.teleport(position[0], position[1] - (4 * offset))
+    t.write(f"Anzahl Kanten: {connection_count}")
+    t.teleport(position[0], position[1] - (5 * offset))
+    t.hideturtle()
     t.update()
 
 
