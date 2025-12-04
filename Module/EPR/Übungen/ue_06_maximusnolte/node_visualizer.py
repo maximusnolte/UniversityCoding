@@ -3,13 +3,20 @@ import turtle as t
 
 def calculate_outgoing_degree(node_in, nodes_in):
     """Calculates the outgoing degree of a node.
+        :param node_in: str - The node to calculate the outgoing degree for.
+        :param nodes_in: dict - The existing nodes dictionary.
+        :return: int - The outgoing degree of the node.
     """
     connections = nodes_in[node_in]
     return len(connections) + 1
 
 
 def calculate_incoming_degree(node_in, nodes_in):
-    """Calculates the incoming degree of a node."""
+    """Calculates the incoming degree of a node.
+        :param node_in: str - The node to calculate the incoming degree for.
+        :param nodes_in: dict - The existing nodes dictionary.
+        :return: int - The incoming degree of the node.
+    """
     count = 0
     for k in nodes_in:
         connections = nodes_in[k]
@@ -19,14 +26,24 @@ def calculate_incoming_degree(node_in, nodes_in):
 
 
 def calculate_angle(start_position, end_position):
-    """Calculates the angle between two positions."""
+    """Calculates the angle between two positions.
+        :param start_position: int - The start position of the angle.
+        :param end_position: int - The end position of the angle.
+        :return: int - The angle between the two positions.
+    """
     angle = degrees(atan2(end_position[1] - start_position[1],
                                     end_position[0] - start_position[0]))
     return angle
 
 
 def draw_node(node, position, color, size, offset=(0, 0)):
-    """Draws a single node at a given position."""
+    """Draws a single node at a given position using Turtle.
+        :param node: Node to draw.
+        :param position: Position to draw the node at.
+        :param color: Color of the node.
+        :param size: Size of the node.
+        :param offset: Offset to apply to the position.
+    """
     print(f"Drawing Knot: ({node}) at position: {position[0] + offset[0]}, "
           f"{position[1] + offset[1]} with color: {color}")
     t.teleport(position[0] + offset[0], position[1] + offset[1])
@@ -36,7 +53,12 @@ def draw_node(node, position, color, size, offset=(0, 0)):
 
 def draw_connection(start_position, end_position, directional=False,
                     offset=(0, 0)):
-    """Draws a connection between two nodes."""
+    """Draws a connection between two nodes using Turtle.
+        :param start_position: Start position of the connection.
+        :param end_position: End position of the connection.
+        :param directional: Whether the connection is directional.
+        :param offset: Offset to apply to the positions.
+    """
     angle = calculate_angle(start_position, end_position)
     print(f"Drawing Connection from: {start_position} to: {end_position}")
     t.teleport(start_position[0] + offset[0],
@@ -50,7 +72,11 @@ def draw_connection(start_position, end_position, directional=False,
 
 
 def get_node_color(node_in, nodes_in):
-    """Determines the color of a node based on its degrees."""
+    """Determines the color of a node based on its degrees.
+        :param node_in: str - The node to determine the color for.
+        :param nodes_in: dict - The existing nodes dictionary.
+        :return: str - The color of the node.
+    """
     outgoing_degree = calculate_outgoing_degree(node_in, nodes_in)
     incoming_degree = calculate_incoming_degree(node_in, nodes_in)
     if outgoing_degree == 1:
@@ -68,7 +94,12 @@ def finish_drawing():
 
 
 def draw_nodes(nodes_in, nodes_positions_in, size=10, offset=(0, 0)):
-    """Draws a dict of nodes at given positions."""
+    """Draws a dict of nodes at given positions.
+        :param nodes_in: dict - The existing nodes dictionary.
+        :param nodes_positions_in: dict - The positions of the nodes.
+        :param size: Size of the nodes.
+        :param offset: Offset to apply to the positions.
+    """
     t.tracer(0)
     for node in nodes_in:
         position = nodes_positions_in[node]
@@ -79,7 +110,12 @@ def draw_nodes(nodes_in, nodes_positions_in, size=10, offset=(0, 0)):
 
 def draw_connections(nodes_in, nodes_positions_in, directional=False,
                      offset=(0, 0)):
-    """Draws connections between nodes."""
+    """Draws connections between nodes.
+        :param nodes_in: dict - The existing nodes dictionary.
+        :param nodes_positions_in: dict - The positions of the nodes.
+        :param directional: Whether the connections are directional.
+        :param offset: Offset to apply to the positions.
+    """
     t.tracer(1)
     for node in nodes_in:
         start_position = nodes_positions_in[node]
@@ -90,7 +126,10 @@ def draw_connections(nodes_in, nodes_positions_in, directional=False,
 
 
 def draw_legend(position=(200, 200), offset=20):
-    """Draws a legend for the node colors."""
+    """Draws a legend for the node colors.
+        :param position: Position to draw the legend at. (default: (200, 200))
+        :param offset: Offset between legend entries. (default: 20)
+    """
     t.tracer(0)
     t.teleport(position[0], position[1])
     t.write("Legend:")
@@ -107,7 +146,11 @@ def draw_legend(position=(200, 200), offset=20):
 
 
 def calculate_edge_count(nodes_in, directed=False):
-    """Calculates the number of edges in the graph."""
+    """Calculates the number of edges in the graph.
+        :param nodes_in: dict - The existing nodes dictionary.
+        :param directed: bool - Whether the graph is directed.
+        :return: int - The number of edges in the graph.
+    """
     if directed:
         edge_count = 0
         for node in nodes_in:
@@ -120,14 +163,10 @@ def calculate_edge_count(nodes_in, directed=False):
         edge_count += len(neighbors)
     return edge_count // 2
 
-
-def check_edge_count(nodes_in, directed=False):
-    """Checks if the edge count matches the expected value for a tree."""
-    edge_count = calculate_edge_count(nodes_in, directed)
-    if edge_count == len(nodes_in) - 1:
-        return True
-    return False
-
 def node_visualizer(window_size=(1000,1000), speed=0):
+    """Sets up the turtle graphics window.
+        :param window_size: Tuple - The size of the window. (default: (1000, 1000))
+        :param speed: int - The speed of the turtle. (default: 0)
+    """
     t.setup(window_size[0], window_size[1])
     t.speed(speed)

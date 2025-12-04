@@ -4,9 +4,12 @@ from node_visualizer import *
 from copy import deepcopy
 
 
-
 def append_node(node_in, nodes_in):
-    """Appends a new node to the nodes dictionary."""
+    """Appends a new node to the nodes dictionary.
+        :param node_in: Node to append.
+        :param nodes_in: dict - The existing nodes dictionary.
+        :return: dict - A dictionary of nodes with the new node added.
+    """
     node_in = str(node_in)
     if node_in not in nodes_in:
         node_in = {node_in: ()}
@@ -16,7 +19,13 @@ def append_node(node_in, nodes_in):
 
 
 def set_node_connections(node_in, nodes_in, new_connections):
-    """Sets new connections for a given node."""
+    """Sets new connections for a given node.
+        :param node_in: Node to set connections for.
+        :param nodes_in: dict - The existing nodes dictionary.
+        :param new_connections: tuple - The new connections to set.
+        :return: dict - A dictionary of nodes with updated connections.
+
+    """
     if node_in in nodes_in:
         nodes_in[node_in] = new_connections
         return nodes_in
@@ -24,7 +33,11 @@ def set_node_connections(node_in, nodes_in, new_connections):
 
 
 def generate_node_positions(nodes_in, distance=100):
-    """Generates positions for nodes in a grid layout."""
+    """Generates positions for nodes in a grid layout.
+        :param nodes_in: dict - The existing nodes dictionary.
+        :param distance: int - The distance between nodes.
+        :return: dict - A dictionary of nodes with their positions.
+    """
     print("Generating positions for nodes...")
     cols = ceil(sqrt(len(nodes_in)))
 
@@ -38,7 +51,11 @@ def generate_node_positions(nodes_in, distance=100):
 
 
 def convert_string_connections(input_string, nodes):
-    """Converts a string representation of connections into a dict."""
+    """Modifies a given Node-Dictionary with new Connections.
+        :param input_string: str - The string representation of connections.
+        :param nodes: dict - The existing nodes dictionary.
+        :return: dict - A dictionary of nodes with their connections.
+    """
     print("Converting string to connections...")
 
     input_string = input_string.strip()
@@ -79,7 +96,10 @@ def convert_string_connections(input_string, nodes):
 
 
 def generate_node_dict(number_of_nodes):
-    """Generates a dictionary of nodes with no connections."""
+    """Generates a dictionary of nodes with no connections.
+        :param number_of_nodes: Number of nodes.
+        :return: dict - A dictionary of nodes with no connections.
+    """
     nodes = {}
     for i in range(number_of_nodes):
         append_node(i+1, nodes)
@@ -87,7 +107,12 @@ def generate_node_dict(number_of_nodes):
 
 
 def option_handler(option):
-    """Handles user options for node input."""
+    """Handles user options for node input.
+        User can choose to generate nodes automatically, input nodes manually,
+        or input node positions manually.
+        :param option: int - The option selected by the user.
+        :return: dict - A dictionary of nodes with their connections.
+    """
     match option:
         case 1:
             print("How many nodes to generate?")
@@ -162,8 +187,12 @@ def option_handler(option):
 
 
 def input_handler():
-    """Handles user input for graph configuration."""
-    # Setting up directed or undirected graph
+    """Handles user input for graph configuration.
+        User is prompted to specify if the graph is directed,
+        input nodes, and set up connections.
+        :return: tuple: A tuple containing a boolean indicating if the graph is
+        directed and a dictionary of nodes with their connections.
+    """
     print("----Graph Type----")
     directed = None
     while directed is None:
