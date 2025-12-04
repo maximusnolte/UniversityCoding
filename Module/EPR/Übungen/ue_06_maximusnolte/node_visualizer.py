@@ -1,43 +1,11 @@
-from math import degrees, atan2
+from node_backend import (calculate_incoming_degree,
+                          calculate_outgoing_degree,
+                          calculate_angle)
 import turtle as t
 
-def calculate_outgoing_degree(node_in, nodes_in):
-    """Calculates the outgoing degree of a node.
-        :param node_in: str - The node to calculate the outgoing degree for.
-        :param nodes_in: dict - The existing nodes dictionary.
-        :return: int - The outgoing degree of the node.
-    """
-    connections = nodes_in[node_in]
-    return len(connections)
-
-
-def calculate_incoming_degree(node_in, nodes_in):
-    """Calculates the incoming degree of a node.
-        :param node_in: str - The node to calculate the incoming degree for.
-        :param nodes_in: dict - The existing nodes dictionary.
-        :return: int - The incoming degree of the node.
-    """
-    count = 0
-    for k in nodes_in:
-        connections = nodes_in[k]
-        if node_in in connections:
-            count += 1
-    return count
-
-
-def calculate_angle(start_position, end_position):
-    """Calculates the angle between two positions.
-        :param start_position: int - The start position of the angle.
-        :param end_position: int - The end position of the angle.
-        :return: int - The angle between the two positions.
-    """
-    angle = degrees(atan2(end_position[1] - start_position[1],
-                                    end_position[0] - start_position[0]))
-    return angle
-
-
 def draw_node(node, position, color, size, offset=(0, 0)):
-    """Draws a single node at a given position using Turtle.
+    """Draws a single node with a color, size and offset
+        at a given position using Turtle.
         :param node: Node to draw.
         :param position: Position to draw the node at.
         :param color: Color of the node.
@@ -48,7 +16,7 @@ def draw_node(node, position, color, size, offset=(0, 0)):
           f"{position[1] + offset[1]} with color: {color}")
     t.teleport(position[0] + offset[0], position[1] + offset[1])
     t.dot(size, color)
-    t.write(node)
+    t.write(node,font=("Arial", 16, "normal"))
 
 
 def draw_connection(start_position, end_position, directional=False,
@@ -125,7 +93,7 @@ def draw_connections(nodes_in, nodes_positions_in, directional=False,
             draw_connection(start_position, end_position, directional, offset)
 
 
-def draw_legend(connection_count, position=(350, 400), offset=20):
+def draw_legend(connection_count, position=(250, -400), offset=20):
     """Draws a legend for the node colors.
         :param connection_count: int - The number of connections in the graph.
         :param position: Position to draw the legend at. (default: (200, 200))
@@ -134,40 +102,40 @@ def draw_legend(connection_count, position=(350, 400), offset=20):
     print(f"Drawing Legend at: {position[0]} to {position[1]}")
     t.tracer(0)
     t.teleport(position[0], position[1])
-    t.write("Legende:")
+    t.write("Legende:",font=("Arial", 16, "normal"))
     t.teleport(position[0], position[1] - offset)
     t.dot(10, "red")
-    t.write(" End-Knoten mit Ausgangsgrad 0")
+    t.write(" End-Knoten mit Ausgangsgrad 0", font=("Arial", 16, "normal"))
     t.teleport(position[0], position[1] - (2 * offset))
     t.dot(10, "green")
-    t.write(" Start-Knoten mit Eingangsgrad 0")
+    t.write(" Start-Knoten mit Eingangsgrad 0", font=("Arial", 16, "normal"))
     t.teleport(position[0], position[1] - (3 * offset))
     t.dot(10, "blue")
-    t.write(" Knoten mit sonstigen Graden")
+    t.write(" Knoten mit sonstigen Graden", font=("Arial", 16, "normal"))
     t.teleport(position[0], position[1] - (4 * offset))
-    t.write(f"Anzahl Kanten: {connection_count}")
+    t.write(f"Anzahl Kanten: {connection_count}", font=("Arial", 16, "normal"))
     t.teleport(position[0], position[1] - (5 * offset))
     t.hideturtle()
     t.update()
 
 
-def calculate_edge_count(nodes_in, directed=False):
+def calculate_edge_count(nodes_in, directed):
     """Calculates the number of edges in the graph.
         :param nodes_in: dict - The existing nodes dictionary.
         :param directed: bool - Whether the graph is directed.
         :return: int - The number of edges in the graph.
     """
     if directed:
-        edge_count = 0
-        for node in nodes_in:
-            connections = nodes_in[node]
-            edge_count += len(connections)
-        return edge_count
+        return sum(calculate_outgoing_degree(node, nodes_in)
+                   for node in nodes_in)
 
-    edge_count = 0
-    for neighbors in nodes_in.values():
-        edge_count += len(neighbors)
-    return edge_count // 2
+    total_deg = 0
+    for node in nodes_in:
+        outd = calculate_outgoing_degree(node, nodes_in)
+        ind = calculate_incoming_degree(node, nodes_in)
+        total_deg += outd + ind
+
+    return total_deg // 2
 
 def node_visualizer(window_size=(1000,1000), speed=0):
     """Sets up the turtle graphics window.
