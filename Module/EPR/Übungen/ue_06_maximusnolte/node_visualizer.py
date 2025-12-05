@@ -1,7 +1,13 @@
+"""Module for visualizing nodes and their connections using Turtle graphics."""
+
+__author__ = '8722674, Nolte'
+#! /venv/bin/python3.14
+
 from node_backend import (calculate_incoming_degree,
                           calculate_outgoing_degree,
                           calculate_angle)
 import turtle as t
+
 
 def draw_node(node, position, color, size, offset=(0, 0)):
     """Draws a single node with a color, size and offset
@@ -16,7 +22,7 @@ def draw_node(node, position, color, size, offset=(0, 0)):
           f"{position[1] + offset[1]} with color: {color}")
     t.teleport(position[0] + offset[0], position[1] + offset[1])
     t.dot(size, color)
-    t.write(node,font=("Arial", 16, "normal"))
+    t.write(node, font=("Arial", 16, "normal"))
 
 
 def draw_connection(start_position, end_position, directional=False,
@@ -30,7 +36,7 @@ def draw_connection(start_position, end_position, directional=False,
     angle = calculate_angle(start_position, end_position)
     print(f"Drawing Connection from: {start_position} to: {end_position}")
     t.teleport(start_position[0] + offset[0],
-                    start_position[1] + offset[1])
+               start_position[1] + offset[1])
     t.setheading(angle)
     t.pendown()
     t.goto(end_position[0] + offset[0], end_position[1] + offset[1])
@@ -51,6 +57,8 @@ def get_node_color(node_in, nodes_in):
         return "red"
     if incoming_degree == 0 and not outgoing_degree == 0:
         return "green"
+    if incoming_degree == 0 and outgoing_degree == 0:
+        return "black"
     return "blue"
 
 
@@ -93,53 +101,38 @@ def draw_connections(nodes_in, nodes_positions_in, directional=False,
             draw_connection(start_position, end_position, directional, offset)
 
 
-def draw_legend(connection_count, position=(250, -400), offset=20):
+def draw_legend(position=(250, -400), offset=20):
     """Draws a legend for the node colors.
-        :param connection_count: int - The number of connections in the graph.
         :param position: Position to draw the legend at. (default: (200, 200))
         :param offset: Offset between legend entries. (default: 20)
     """
     print(f"Drawing Legend at: {position[0]} to {position[1]}")
     t.tracer(0)
     t.teleport(position[0], position[1])
-    t.write("Legende:",font=("Arial", 16, "normal"))
+    t.write("Legende:", font=("Arial", 16, "normal"))
     t.teleport(position[0], position[1] - offset)
     t.dot(10, "red")
-    t.write(" End-Knoten mit Ausgangsgrad 0", font=("Arial", 16, "normal"))
+    t.write(" End-Knoten mit Ausgangsgrad 0", font=("Arial", 16,
+            "normal"))
     t.teleport(position[0], position[1] - (2 * offset))
     t.dot(10, "green")
-    t.write(" Start-Knoten mit Eingangsgrad 0", font=("Arial", 16, "normal"))
+    t.write(" Start-Knoten mit Eingangsgrad 0", font=("Arial", 16,
+            "normal"))
     t.teleport(position[0], position[1] - (3 * offset))
     t.dot(10, "blue")
-    t.write(" Knoten mit sonstigen Graden", font=("Arial", 16, "normal"))
+    t.write(" Knoten mit sonstigen Graden", font=("Arial", 16,
+            "normal"))
     t.teleport(position[0], position[1] - (4 * offset))
-    t.write(f"Anzahl Kanten: {connection_count}", font=("Arial", 16, "normal"))
-    t.teleport(position[0], position[1] - (5 * offset))
+    t.dot(10, "black")
+    t.write(" Isolierter Knoten", font=("Arial", 16, "normal"))
     t.hideturtle()
     t.update()
 
 
-def calculate_edge_count(nodes_in, directed):
-    """Calculates the number of edges in the graph.
-        :param nodes_in: dict - The existing nodes dictionary.
-        :param directed: bool - Whether the graph is directed.
-        :return: int - The number of edges in the graph.
-    """
-    if directed:
-        return sum(calculate_outgoing_degree(node, nodes_in)
-                   for node in nodes_in)
-
-    total_deg = 0
-    for node in nodes_in:
-        outd = calculate_outgoing_degree(node, nodes_in)
-        ind = calculate_incoming_degree(node, nodes_in)
-        total_deg += outd + ind
-
-    return total_deg // 2
-
-def node_visualizer(window_size=(1000,1000), speed=0):
+def node_visualizer(window_size=(1000, 1000), speed=0):
     """Sets up the turtle graphics window.
-        :param window_size: Tuple - The size of the window. (default: (1000, 1000))
+        :param window_size: Tuple - The size of the window.
+        (default: (1000, 1000))
         :param speed: int - The speed of the turtle. (default: 0)
     """
     t.setup(window_size[0], window_size[1])

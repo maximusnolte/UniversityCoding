@@ -1,6 +1,8 @@
-"""Module for handling graph nodes and their connections.
-    Aswell as user input for graph configuration.
+"""Module for handling user input for graph configuration.
 """
+
+__author__ = '8722674, Nolte'
+#! /venv/bin/python3.14
 
 from node_visualizer import *
 from node_backend import *
@@ -47,7 +49,8 @@ def option_handler(option):
                             append_node(entry, nodes)
                 else:
                     print(
-                        "Invalid input format. Please separate entries with semicolons.")
+                        "Invalid input format. Please separate entries with"
+                        " semicolons.")
                     nodes = None
             return nodes
         case 3:
@@ -66,22 +69,28 @@ def option_handler(option):
                             continue
                         else:
                             if len(entry) != 2:
-                                print(f"Invalid entry (must have exactly two values): {entry}")
+                                print(f"Invalid entry (must have exactly two "
+                                      f"values): {entry}")
                                 nodes = None
                                 break
                             x_position = entry[0].strip()
                             y_position = entry[1].strip()
                             if x_position.isdigit() and y_position.isdigit():
                                 append_node(i, nodes)
-                                set_node_connections(i, nodes, (int(x_position), int(y_position)))
-                                print(f"Added node '{i}' with position ({x_position}, {y_position})")
+                                set_node_connections(i, nodes,
+                                                     (int(x_position),
+                                                      int(y_position)))
+                                print(f"Added node '{i}' with position "
+                                      f"({x_position}, {y_position})")
                             else:
                                 print(f"Invalid entry ({x_position}, "
-                                  f"{y_position}): {entry} got non -integer values")
+                                      f"{y_position}): {entry} got non "
+                                      f"-integer values")
                                 nodes = None
                 else:
                     print(
-                        "Invalid input format. Please separate entries with semicolons.")
+                        "Invalid input format. Please separate "
+                        "entries with semicolons.")
                     nodes = None
             return nodes
     return None
@@ -116,7 +125,8 @@ def input_handler():
         "by semicolons")
     print(
         "3. Input Node Positions Manually (as a valid dict like: Knot_Name: "
-        "x_position, y_position); separated by semicolons, Knot Names will be auto-generated")
+        "x_position, y_position); separated by semicolons, "
+        "Knot Names will be auto-generated")
     while option is None:
         input_string = input("Option 1/2/3) >")
         try:
@@ -133,8 +143,8 @@ def input_handler():
 
     # Setting up connections
     connections = None
-    print("----Setup Knot-Connections----")
-    print("Set Knot Connections (as a valid dict like: "
+    print("----Setup Node-Connections----")
+    print("Set Node Connections (as a valid dict like: "
           "Node_Name: Connected_Node1, Connected_Node2, ...; separated by "
           "semicolons)")
     while connections is None:
@@ -153,9 +163,9 @@ if __name__ == '__main__':
     generated_nodes_positions = generate_node_positions(nodes_input, 100)
 
     node_visualizer(window_size=(1000, 1000), speed=10)
-    nodes_offset = (0,0)
-    draw_nodes(nodes_input, generated_nodes_positions,10, nodes_offset)
+    nodes_offset = (0, 0)
+    draw_nodes(nodes_input, generated_nodes_positions, 10, nodes_offset)
     draw_connections(nodes_input, generated_nodes_positions, directed_input,
                      nodes_offset)
-    draw_legend(calculate_edge_count(nodes_input,directed_input))
+    draw_legend()
     finish_drawing()

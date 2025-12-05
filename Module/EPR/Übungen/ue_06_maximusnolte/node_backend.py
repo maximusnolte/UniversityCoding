@@ -1,5 +1,10 @@
+"""Module for managing nodes and their connections in a graph structure."""
+
+__author__ = '8722674, Nolte'
+#! /venv/bin/python3.14
 
 from math import ceil, sqrt, degrees, atan2
+
 
 def append_node(node_in, nodes_in):
     """Appends a new node to the nodes dictionary.
@@ -36,13 +41,15 @@ def generate_node_positions(nodes_in, distance=100):
         :return: dict - A dictionary of nodes with their positions.
     """
     print("Generating positions for nodes...")
+    if nodes_in is None:
+        return None
     cols = ceil(sqrt(len(nodes_in)))
 
     positions = {}
     for i, node in enumerate(nodes_in):
         row = i // cols
         col = i % cols
-        positions.update({node : (col * distance, row * distance)})
+        positions.update({node: (col * distance, row * distance)})
     print(f"Finished generating positions for nodes. Positions: {positions}")
     return positions
 
@@ -78,34 +85,31 @@ def convert_string_connections(input_string, nodes, directional):
 
         connected_nodes = tuple(connected_nodes)
 
-        # Node existiert nicht
         if node not in nodes:
             print(f"Knot {node} does not exist.")
             return None
 
-        # Setze die direkten Verbindungen
-        nodes[node] = connected_nodes
+        # direkte Verbindungen: nicht überschreiben, sondern ergänzen
+        existing = list(nodes[node])
+        for cnode in connected_nodes:
+            if cnode not in existing:
+                existing.append(cnode)
+        nodes[node] = tuple(existing)
 
-        # Falls directional=True: Rückverbindungen setzen
         if not directional:
             for cnode in connected_nodes:
                 if cnode not in nodes:
                     print(f"Knot {cnode} does not exist.")
                     return None
 
-                # alte connections holen
                 existing = list(nodes[cnode])
-
-                # rückverbindung hinzufügen falls nicht existiert
                 if node not in existing:
                     existing.append(node)
-
                 nodes[cnode] = tuple(existing)
 
     print("Converted connections:")
     print(nodes)
     return nodes
-
 
 
 def generate_node_dict(number_of_nodes):
@@ -153,5 +157,5 @@ def calculate_angle(start_position, end_position):
         :return: int - The angle between the two positions.
     """
     angle = degrees(atan2(end_position[1] - start_position[1],
-                                    end_position[0] - start_position[0]))
+                    end_position[0] - start_position[0]))
     return angle
