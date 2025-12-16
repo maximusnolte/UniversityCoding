@@ -8,14 +8,6 @@ Die wichtigsten Helferfunktionen liefern zu Demonstrationszwecken bereits
 DocTest-Beispiele, sodass sie mit ``python -m doctest -v Module/EPR/Übungen/EPR_07/__init__.py``
 überprüft werden können.
 
-Kurzanleitung
--------------
-Für einen schnellen Einstieg steht ein Kommandozeilen-Wrapper bereit::
-
-    python -m Module.EPR.Übungen.EPR_07 --algo best --start A --goal H
-
-``--algo`` kann einen der Werte ``greedy``, ``best``, ``distance``, ``balanced``,
-``risk`` oder ``random`` annehmen. Weitere Beispiele siehe ``main.py``.
 """
 from __future__ import annotations
 
