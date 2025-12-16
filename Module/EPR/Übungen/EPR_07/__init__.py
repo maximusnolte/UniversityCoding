@@ -7,6 +7,7 @@ orientieren sich an dem im Übungsblatt dargestellten Graphen (Knoten A–H).
 Die wichtigsten Helferfunktionen liefern zu Demonstrationszwecken bereits
 DocTest-Beispiele, sodass sie mit ``python -m doctest -v Module/EPR/Übungen/EPR_07/__init__.py``
 überprüft werden können.
+
 """
 from __future__ import annotations
 
