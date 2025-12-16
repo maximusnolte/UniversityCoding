@@ -1,25 +1,6 @@
-"""Greedy Search Algorithm Implementation"""
+"""Greedy Search Algorithm Implementation for a Graph with Cost and Distraction Metrics."""
 
-graph = {
-    'A': {
-        'B': (3, 2),
-        'C': (1, 0),
-        },
-    'B': {
-        'D': (4, 5),
-        'E': (2, 1),
-        },
-    'C': {
-        'D': (2, 3),
-        },
-    'D': {
-        'F': (3, 4),
-        },
-    'E': {
-        'F': (5, 0),
-        },
-    'F': {}
-}
+import timeit
 
 def calculate_efficiency (cost, distraction):
     """Calculate efficiency as distraction divided by (cost + 1) to avoid division by zero.
@@ -28,6 +9,25 @@ def calculate_efficiency (cost, distraction):
         :return: The efficiency value.
     """
     return distraction / (cost + 1)
+
+def choose_best_neighbor(neighbors, visited):
+    """Choose the neighbor with the highest efficiency that hasn't been visited yet.
+        :arg neighbors: The list of neighbors.
+        :arg visited: The set of visited nodes.
+        :return: The best neighbor
+    """
+    best_efficiency = -float('inf')
+    best = None
+
+    for neighbor, (cost, distraction) in neighbors.items():
+        if neighbor not in visited:
+            eff = calculate_efficiency(cost, distraction)
+            if eff > best_efficiency:
+                best_efficiency = eff
+                best = (neighbor, cost, distraction)
+
+    return best
+
 
 def greedy_search(graph, start, goal):
     """Perform a greedy search on the graph from start to goal.
@@ -44,22 +44,11 @@ def greedy_search(graph, start, goal):
     visited = {start}
 
     while current != goal:
-        neighbors = graph[current]
-        best_efficiency = -float('inf')
-        next_node = None
-
-        for neighbor, (cost, distraction) in neighbors.items():
-            if neighbor not in visited:
-                efficiency = calculate_efficiency(cost, distraction)
-                if efficiency > best_efficiency:
-                    best_efficiency = efficiency
-                    next_node = neighbor
-                    next_cost = cost
-                    next_distraction = distraction
-
-        if next_node is None:
-            print("No path found")
+        result = choose_best_neighbor(graph[current], visited)
+        if result is None:
             return None, None, None
+
+        next_node, next_cost, next_distraction = result
 
         path.append(next_node)
         total_cost += next_cost
@@ -71,11 +60,32 @@ def greedy_search(graph, start, goal):
 
 
 if __name__ == "__main__":
-    start_node = 'A'
-    goal_node = 'F'
-    path, total_cost, total_distraction = greedy_search(graph, start_node, goal_node)
+    g = {
+        'A': {
+            'B': (3, 2),
+            'C': (1, 0),
+        },
+        'B': {
+            'D': (4, 5),
+            'E': (2, 1),
+        },
+        'C': {
+            'D': (2, 3),
+        },
+        'D': {
+            'F': (3, 4),
+        },
+        'E': {
+            'F': (5, 0),
+        },
+        'F': {}
+    }
+    START_NODE = 'A'
+    GOAL_NODE = 'F'
 
-    if path:
-        print(f"Path found: {' -> '.join(path)}")
-        print(f"Total Cost: {total_cost}")
-        print(f"Total Distraction: {total_distraction}")
+    time = timeit.timeit(
+        lambda: greedy_search(g, START_NODE, GOAL_NODE),
+        number=10_000
+    )
+
+    print(f"Greedy runtime (10k runs): {time} seconds")
