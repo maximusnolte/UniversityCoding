@@ -20,3 +20,4 @@ class Omnivore(Animal):
                 return (f"{self.id} "
                         f"found poisonous berries and is getting sick.")
         return f"{self.id} is searching for plants to eat."
+#TODO complete the class implementation

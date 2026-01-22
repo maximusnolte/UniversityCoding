@@ -9,3 +9,4 @@ class Ecosystem:
 
     def simulateRound(self):
         pass
+#TODO make it a real "game"

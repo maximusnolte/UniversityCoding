@@ -1,3 +1,10 @@
+"""
+This module provides the `Carnivore` class, a specialization of `Animal`
+that hunts other animals, can inflict damage (and poison if venomous),
+and can mate to produce offspring. Hunting and mating behaviors interact
+with other animal instances in the simulation.
+"""
+
 import random
 
 from EPR.Übungen.ue_08.Animal import Animal
@@ -5,13 +12,54 @@ from EPR.Übungen.ue_08.Herbivore import Herbivore
 
 
 class Carnivore(Animal):
+    """A carnivorous animal that hunts other animals and reproduces.
+
+    Attributes:
+        venomous (bool): Whether this carnivore can poison prey when injuring.
+        damage (int | float): Amount of damage inflicted on injured prey.
+        Inherits attributes from `Animal` such as `id`, `species`, `gender`,
+        `max_size`, `food_level`, `max_food`, `size_mult`, `mating_*` fields, etc.
+    """
 
     def __init__(self, venomous: bool, damage, **animal_args):
+        """Initialize a new Carnivore.
+
+        Args:
+            venomous (bool): If True, successful injures may apply poison.
+            damage (int | float): Damage applied to prey when injuring.
+            **animal_args: Keyword arguments forwarded to the `Animal`
+                superclass constructor (e.g. `id`, `species`, `max_size`, ...).
+
+        Returns:
+            None
+        """
         self.venomous = venomous
         self.damage = damage
         super().__init__(**animal_args)
 
     def hunt(self, animals):
+        """Attempt to hunt a prey from a sequence of animals.
+
+        The method selects a prey (not the hunter itself) and compares sizes.
+        Behavior varies depending on prey type and relative sizes:
+          - If prey is a `Herbivore`, success conditions and a small random
+            chance to injure (possibly poison) are applied.
+          - If prey is same species, hunting is refused.
+          - For other prey, a higher chance to injure (and possibly poison)
+            is applied, with additional special-case handling when the prey
+            is a larger `Carnivore` that can kill the hunter.
+        The method updates food levels via `eat`, may call `die` or `getInjured`
+        on the prey, and prints status messages.
+
+        Args:
+            animals (Sequence[Animal]): Sequence of candidate prey animals.
+
+        Returns:
+            Animal | None:
+                - The prey instance if it was successfully hunted and eaten.
+                - The hunter instance if the hunter died as result of the hunt.
+                - `None` if no successful hunt occurred or only injuring/poisoning happened.
+        """
         prey = random.choice(animals)
         if len(animals) == 1:
             print("No other animals to hunt.")
@@ -68,6 +116,19 @@ class Carnivore(Animal):
             return None
 
     def mate(self, partner):
+        """Mate with another animal and produce an offspring instance.
+
+        The method updates mating state (`mateable` and `mating_cooldown`) for
+        the mating participant(s) and constructs a new instance of the same
+        class as the parents with averaged characteristics. The offspring is
+        returned with `id=None` and inherited species.
+
+        Args:
+            partner (Animal): The mating partner.
+
+        Returns:
+            Carnivore: A new `Carnivore` instance representing the offspring.
+        """
         if self.gender:
             self.mateable = False
             self.mating_cooldown = self.mating_start_cooldown
