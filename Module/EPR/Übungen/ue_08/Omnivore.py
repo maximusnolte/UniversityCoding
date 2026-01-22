@@ -11,9 +11,9 @@ class Omnivore(Animal):
 
     def searchFood(self, plants):
         plant = random.choice(plants)
-        food_requiered = self.max_food - self.food_level
+        food_required = self.max_food - self.food_level
         self.eat(plant)
-        plant.getEaten(food_requiered)
+        plant.getEaten(food_required)
 
         if isinstance(plant, BerryBush):
             if random.random() < 1.0 < 1.0 - plant.poison_chance:

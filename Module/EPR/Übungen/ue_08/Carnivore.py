@@ -55,9 +55,10 @@ class Carnivore(Animal):
                     prey.die()
                     print(f"{self.id} hunted and ate animal {prey.id}.")
                     return prey
-            if size*1.5 <= prey_size:
+            if size*1.5 <= prey_size and isinstance(prey, Carnivore):
                 prey.eat(self.food_level)
                 self.die()
                 print(f"Carnivore {self.id} was killed by prey {prey.id} "
                       f"during a failed hunt.")
                 return self
+            return None

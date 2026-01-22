@@ -1,7 +1,3 @@
-from EPR.Übungen.ue_08.Animal import Animal
-from EPR.Übungen.ue_08.Habitat import Habitat
-from EPR.Übungen.ue_08.Plant import Plant
-
 
 class LivingThing:
 
