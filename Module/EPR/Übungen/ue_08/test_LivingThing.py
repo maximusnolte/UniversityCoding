@@ -16,3 +16,6 @@ class TestLivingThing(unittest.TestCase):
         result = self.livingthing1.die()
         self.assertEqual(self.livingthing1.alive, False)
         self.assertEqual(result, "1 has died.")
+
+if __name__ == '__main__':
+    unittest.main()

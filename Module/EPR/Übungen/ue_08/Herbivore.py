@@ -10,19 +10,17 @@ class Herbivore(Animal):
 
 
     def searchFood(self, plants):
-        if not plants:
-            return None
-
-        plant = random.choice(plants)
-        if not plant.alive or plant.size <= 0:
-            return None
 
         food_required = self.max_food - self.food_level
         if food_required <= 0:
+            print("Herbivore is not hungry.")
+            return None
+        plant = random.choice(plants)
+        if not plant.alive or plant.size <= 0:
+            print(f"Plant {plant.id} is not available for eating.")
             return None
 
         max_food_from_plant = plant.size * plant.food_value
-
 
         food_taken = min(food_required, max_food_from_plant)
         if food_taken <= 0:

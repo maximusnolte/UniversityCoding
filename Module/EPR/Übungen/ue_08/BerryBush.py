@@ -7,5 +7,4 @@ class BerryBush(Plant):
         super().__init__(**plant_args)
 
         self.berry_count = berry_count
-        self.poison_chance = poison_chance  # 10% chance that a berry is
-    # poisonous
+        self.poison_chance = poison_chance

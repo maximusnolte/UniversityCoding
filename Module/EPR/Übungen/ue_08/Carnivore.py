@@ -13,9 +13,13 @@ class Carnivore(Animal):
 
     def hunt(self, animals):
         prey = random.choice(animals)
+        if len(animals) == 1:
+            print("No other animals to hunt.")
+            return None
+        while prey.id == self.id:
+            prey = random.choice(animals)
         prey_size = prey.calculateSize()
         size = self.calculateSize()
-
         if isinstance(prey, Herbivore):
             if size > prey_size:
                 if random.random() < 0.1:
@@ -62,3 +66,35 @@ class Carnivore(Animal):
                       f"during a failed hunt.")
                 return self
             return None
+
+    def mate(self, partner):
+        if self.gender:
+            self.mateable = False
+            self.mating_cooldown = self.mating_start_cooldown
+            print(f"Animal {self.id} has mated with Animal {partner.id}., "
+                  f"cooldown is now {self.mating_cooldown} for self")
+
+        elif partner.gender:
+            partner.mateable = False
+            partner.mating_cooldown = partner.mating_start_cooldown
+            print(f"Animal {self.id} has mated with Animal {partner.id}, "
+                  f"cooldown is now {partner.mating_cooldown} for partner")
+
+        gender = random.choice([True, False])
+        return self.__class__(
+            id=None,
+            max_age= (self.max_age + partner.max_age) // 2,
+            size_mult= (self.size_mult + partner.size_mult) // 2,
+            food_consumption=self.food_consumption,
+            max_food=self.max_food,
+            days_to_starve=self.days_to_starve,
+            mating_start_cooldown=self.mating_start_cooldown,
+            mating_age=self.mating_age,
+            healing_rate=self.healing_rate,
+            gender=gender,
+            species=self.species,
+            day_spawned=None,
+            max_size = (self.max_size + partner.max_size) // 2,
+            venomous = self.venomous,
+            damage = self.damage
+        )

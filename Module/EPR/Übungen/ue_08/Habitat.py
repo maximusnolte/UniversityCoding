@@ -95,6 +95,67 @@ class Habitat:
 
         return dead_plants, new_plants
 
+    def handle_starvation(self, a, dead_animals):
+        a.food_level -= a.food_consumption
+        if a.food_level <= 0:
+            print(f"Animal {a.id} has starved to death.")
+            a.alive = False
+            dead_animals.append(a)
+            return True
+        return False
+
+    def handle_cooldowns_and_heal(self, a):
+        if a.mating_cooldown > 0:
+            a.mating_cooldown -= 1
+        a.heal()
+
+    def handle_hunting_or_eating(self, a, dead_animals):
+        if isinstance(a, Carnivore):
+            target = a.hunt(self.animals)
+            if target is not None:
+                dead_animals.append(target)
+
+        elif isinstance(a, Herbivore):
+            food = a.searchFood(self.plants)
+            if food is not None:
+                print(f"{a.id} ate plant {food.id}.")
+                if not food.alive:
+                    print(
+                        f"Plant {food.id} has been fully eaten")
+
+    def handle_aging_and_mating(self, a, current_day, dead_animals,
+                                new_animals):
+        val = a.age(current_day)
+        if val is None:
+            print(f"Animal {a.id} has died of old age.")
+            dead_animals.append(a)
+            return
+
+        print(f"Animal {a.id} is now {val} days old.")
+
+        # Mating-Block 1:1 aus deiner Logik übernommen
+        if a.mateable and a.gender == False:
+            if (self.calculateAnimalCapacity() - len(self.animals) > 0 or
+                    True): #TODO Kapazitätsprüfung deaktiviert
+                if random.random() < 0.5:
+                    print(f"Animal {a.id} is looking for a mate.")
+                    partners = []
+                    for partner in self.animals:
+                        if self.checkMate(partner, a):
+                            partners.append(partner)
+
+                    if len(partners) == 0:
+                        print(f"Animal {a.id} found no mates.")
+                        return
+
+                    partner = random.choice(partners)
+                    child = a.mate(partner)
+                    child.id = len(self.animals) + 1
+                    child.day_spawned = current_day
+                    new_animals.append(child)
+                    print(
+                        f"Animal {a.id} has mated with {partner.id} to produce offspring {child.id}.")
+
 
     def update_animals_cycle(self, current_day):
         dead_animals = []
@@ -123,70 +184,6 @@ class Habitat:
         self.apply_spawns_despawns(dead_plants, dead_animals, new_plants,
                                    new_animals)
 
-
-
-
-    def handle_starvation(self, a, dead_animals):
-        a.food_level -= a.food_consumption
-        if a.food_level <= 0:
-            print(f"Animal {a.id} has starved to death.")
-            a.alive = False
-            dead_animals.append(a)
-            return True
-        return False
-
-    def handle_cooldowns_and_heal(self, a):
-        if a.mating_cooldown > 0:
-            a.mating_cooldown -= 1
-        a.heal()
-
-    def handle_hunting_or_eating(self, a, dead_animals):
-        if isinstance(a, Carnivore):
-            target = a.hunt(self.animals)
-            if target is not None:
-                dead_animals.append(target)
-
-        elif isinstance(a, Herbivore):
-            food = a.searchFood(self.plants)
-            if food is not None and food.alive:
-                print(f"{a.id} ate plant {food.id}.")
-                # Original-Logik beibehalten, auch wenn sie bisschen weird ist:
-                if not food.alive:
-                    print(
-                        f"Plant {food.id} has been fully eaten and removed from habitat.")
-                    dead_plants = []  # not used here; see note below
-
-    def handle_aging_and_mating(self, a, current_day, dead_animals,
-                                new_animals):
-        val = a.age(current_day)
-        if val is None:
-            print(f"Animal {a.id} has died of old age.")
-            dead_animals.append(a)
-            return
-
-        print(f"Animal {a.id} is now {val} days old.")
-
-        # Mating-Block 1:1 aus deiner Logik übernommen
-        if a.mateable and a.gender == False:
-            if self.calculateAnimalCapacity() - len(self.animals) > 0:
-                if random.random() < 0.5:
-                    partners = []
-                    for partner in self.animals:
-                        if self.checkMate(partner, a):
-                            partners.append(partner)
-
-                    if len(partners) == 0:
-                        print(f"Animal {a.id} found no mates.")
-                        return
-
-                    partner = random.choice(partners)
-                    child = a.mate(partner)
-                    child.id = len(self.animals) + 1
-                    child.day_spawned = current_day
-                    new_animals.append(child)
-                    print(
-                        f"Animal {a.id} has mated with {partner.id} to produce offspring {child.id}.")
-
     def apply_spawns_despawns(self, dead_plants, dead_animals, new_plants,
                               new_animals):
         for dp in dead_plants:
@@ -197,3 +194,7 @@ class Habitat:
             self.spawnPlant(np)
         for na in new_animals:
             self.spawnAnimal(na)
+        dead_animals.clear()
+        dead_plants.clear()
+        new_animals.clear()
+        new_plants.clear()
