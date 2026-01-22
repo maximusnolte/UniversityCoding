@@ -25,16 +25,16 @@ class Animal(LivingThing):
     ):
         super().__init__(**living_thing_args)
         # Identität
-        self.gender = gender
+        self.gender = gender#
         self.day_spawned = day_spawned
         # Lebenszyklus
-        self.max_age = max_age
-        self.current_age = 0
-        self.mating_age = mating_age
+        self.max_age = max_age#
+        self.current_age = 0#
+        self.mating_age = mating_age#
         # Fortpflanzung
-        self.mating_start_cooldown = mating_start_cooldown
-        self.mating_cooldown = 0
-        self.mateable = False
+        self.mating_start_cooldown = mating_start_cooldown#
+        self.mating_cooldown = 0#
+        self.mateable = False#
         # Energie & Ernährung
         self.max_food = max_food
         self.food_level = max_food
@@ -102,7 +102,7 @@ class Animal(LivingThing):
         elif partner.gender:
             partner.mateable = False
             partner.mating_cooldown = partner.mating_start_cooldown
-            print(f"Animal {self.id} has mated with Animal {partner.id}., "
+            print(f"Animal {self.id} has mated with Animal {partner.id}, "
                   f"cooldown is now {partner.mating_cooldown} for partner")
 
         gender = random.choice([True, False])
@@ -111,7 +111,6 @@ class Animal(LivingThing):
             max_age= (self.max_age + partner.max_age) // 2,
             size_mult= (self.size_mult + partner.size_mult) // 2,
             food_consumption=self.food_consumption,
-            food_level=self.max_food,
             max_food=self.max_food,
             days_to_starve=self.days_to_starve,
             mating_start_cooldown=self.mating_start_cooldown,
@@ -119,5 +118,6 @@ class Animal(LivingThing):
             healing_rate=self.healing_rate,
             gender=gender,
             species=self.species,
-            day_spawned=None
+            day_spawned=None,
+            max_size = (self.max_size + partner.max_size) // 2
         )

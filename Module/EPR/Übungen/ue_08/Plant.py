@@ -14,10 +14,19 @@ class Plant(LivingThing):
         super().__init__(**living_thing_args)
 
     def regenerate(self):
-        if (self.size + self.regen_rate) < self.max_size:
-            self.size += self.regen_rate
-        else:
-            self.size = self.max_size
+        if self.alive:
+            if (self.size + self.regen_rate) < self.max_size:
+                self.size += self.regen_rate
+            else:
+                self.size = self.max_size
+
+    def getEaten(self, amount):
+        self.size -= amount
+        if self.size < self.min_size:
+            self.die()
+            return None
+        print(f"{self.id} has been eaten for {amount} size.")
+        return self.size
 
     def reproduce(self):
         if self.size == self.max_size:
@@ -31,9 +40,3 @@ class Plant(LivingThing):
                     species=self.species
                 )
         return None
-
-    def getEaten(self, amount):
-        self.size -= amount
-        if self.size < self.min_size:
-            self.die()
-        return f"{self.id} has been eaten for {amount} size."
