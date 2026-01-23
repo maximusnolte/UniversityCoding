@@ -60,60 +60,63 @@ class Carnivore(Animal):
                 - The hunter instance if the hunter died as result of the hunt.
                 - `None` if no successful hunt occurred or only injuring/poisoning happened.
         """
-        prey = random.choice(animals)
-        if len(animals) == 1:
-            print("No other animals to hunt.")
-            return None
-        while prey.id == self.id:
+        if self.food_level <= self.max_food / 2:
             prey = random.choice(animals)
-        prey_size = prey.calculateSize()
-        size = self.calculateSize()
-        if isinstance(prey, Herbivore):
-            if size > prey_size:
-                if random.random() < 0.1:
-                    prey.getInjured(self.damage)
-                    if self.venomous:
-                        prey.poisoned = True
-                        print(f"Prey {prey.id} has been poisoned by "
-                              f"carnivore {self.id}")
-                        return None
-                    return None
-                else:
-                    print(f"{self.id} hunted and ate animal {prey.id}.")
-                    self.eat(prey.food_level)
-                    prey.die()
-                    return prey
-            else:
-                print(f"Carnivore {self.id} failed to hunt prey {prey.id} due "
-                      f"to smaller size.")
+            if len(animals) == 1:
+                print("No other animals to hunt.")
                 return None
-        elif prey.species == self.species:
-            print(f"Carnivore {self.id} cannot hunt prey {prey.id} of the "
-                  f"same species.")
-            return None
-        else:
-            if size > prey_size:
-                if random.random() < 0.2:
-                    prey.getInjured(self.damage)
-                    if (self.venomous and isinstance(prey, Carnivore) and not
-                    prey.venomous):
-                        prey.poisoned = True
-                        print(f"Prey {prey.id} has been poisoned by "
-                              f"carnivore {self.id}")
+            while prey.id == self.id:
+                prey = random.choice(animals)
+            prey_size = prey.calculateSize()
+            size = self.calculateSize()
+            if isinstance(prey, Herbivore):
+                if size > prey_size:
+                    if random.random() < 0.1:
+                        prey.getInjured(self.damage)
+                        if self.venomous:
+                            prey.poisoned = True
+                            print(f"Prey {prey.id} has been poisoned by "
+                                  f"carnivore {self.id}")
+                            return None
                         return None
-                    return None
+                    else:
+                        print(f"{self.id} hunted and ate animal {prey.id}.")
+                        self.eat(prey.food_level)
+                        prey.die()
+                        return prey
                 else:
-                    self.eat(prey.food_level)
-                    prey.die()
-                    print(f"{self.id} hunted and ate animal {prey.id}.")
-                    return prey
-            if size*1.5 <= prey_size and isinstance(prey, Carnivore):
-                prey.eat(self.food_level)
-                self.die()
-                print(f"Carnivore {self.id} was killed by prey {prey.id} "
-                      f"during a failed hunt.")
-                return self
-            return None
+                    print(f"Carnivore {self.id} failed to hunt prey {prey.id} due "
+                          f"to smaller size.")
+                    return None
+            elif prey.species == self.species:
+                print(f"Carnivore {self.id} cannot hunt prey {prey.id} of the "
+                      f"same species.")
+                return None
+            else:
+                if size > prey_size:
+                    if random.random() < 0.2:
+                        prey.getInjured(self.damage)
+                        if (self.venomous and isinstance(prey, Carnivore) and not
+                        prey.venomous):
+                            prey.poisoned = True
+                            print(f"Prey {prey.id} has been poisoned by "
+                                  f"carnivore {self.id}")
+                            return None
+                        return None
+                    else:
+                        self.eat(prey.food_level)
+                        prey.die()
+                        print(f"{self.id} hunted and ate animal {prey.id}.")
+                        return prey
+                if size*1.5 <= prey_size and isinstance(prey, Carnivore):
+                    prey.eat(self.food_level)
+                    self.die()
+                    print(f"Carnivore {self.id} was killed by prey {prey.id} "
+                          f"during a failed hunt.")
+                    return self
+                return None
+        print("Carnivore is not hungry and cannot hunt.")
+        return None
 
     def mate(self, partner):
         """Mate with another animal and produce an offspring instance.

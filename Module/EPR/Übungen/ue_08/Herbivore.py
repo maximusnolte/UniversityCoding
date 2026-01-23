@@ -40,7 +40,7 @@ class Herbivore(Animal):
         Args:
             plants (Sequence): A sequence of plant objects.
         Returns:
-            BerryBush | None: The plant that was eaten, or `None` if no
+            None: The plant that was eaten, or `None` if no
             suitable plant was found or no food was taken.
         """
 

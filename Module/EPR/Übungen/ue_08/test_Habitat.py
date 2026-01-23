@@ -1,5 +1,5 @@
 import unittest
-from unittest.mock import patch, mock_open
+from unittest.mock import patch
 
 from EPR.Übungen.ue_08.Animal import Animal
 from EPR.Übungen.ue_08.Carnivore import Carnivore
@@ -33,7 +33,7 @@ class TestHabitat(unittest.TestCase):
                                  mating_age=2, mating_start_cooldown=5,
                                  max_food=5,
                                  food_consumption=1, days_to_starve=1,
-                                 size_mult=1.0, healing_rate=3, id=3,
+                                 size_mult=1.4, healing_rate=3, id=3,
                                  species="Deer",
                                  max_size=80)
     def cleanup(self):
@@ -115,7 +115,8 @@ class TestHabitat(unittest.TestCase):
         self.habitat.spawnAnimal(self.animal1)
         self.habitat.spawnAnimal(self.animal3)
 
-        self.animal1.current_age = 0
+        self.animal1.current_age = 1
+        self.animal1.food_level = 0
         val = self.habitat.handle_hunting_or_eating(self.animal1, #carnivore
                                                     # too small to hunt prey
                                                      dead_animals)

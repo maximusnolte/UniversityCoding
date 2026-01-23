@@ -23,7 +23,7 @@ class Animal(LivingThing):
         self.gender = gender
         self.day_spawned = day_spawned
         self.max_age = max_age
-        self.current_age = 0
+        self.current_age = 1
         self.mating_age = mating_age
         self.mating_start_cooldown = mating_start_cooldown
         self.mating_cooldown = 0
@@ -65,7 +65,7 @@ class Animal(LivingThing):
         return self.size_mult * self.current_age
 
     def age(self, current_day):
-        self.current_age = current_day - self.day_spawned
+        self.current_age = (current_day - self.day_spawned) + 1
         if self.current_age > self.max_age:
             if random.random() < 0.6:
                 self.die()

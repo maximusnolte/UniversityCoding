@@ -1,5 +1,6 @@
 import random
 
+from EPR.Übungen.ue_08.Animal import Animal
 from EPR.Übungen.ue_08.Carnivore import Carnivore
 from EPR.Übungen.ue_08.Herbivore import Herbivore
 from EPR.Übungen.ue_08.Omnivore import Omnivore
@@ -46,18 +47,50 @@ class Habitat:
             print(f"Tried to despawn animal with ID:{animal.id}, but Animal "
                   f"not found.")
 
-    #TODO zwischen den verschiedenen Tierarten unterscheiden
-    def calculateAnimalCapacity(self):
+
+
+    def calculateAnimalCapacityHerbivores(self):
         food_available = sum(p.size for p in self.plants)
-        total_consumption = sum(a.food_consumption for a in self.animals)
+        herbivores = [a for a in self.animals if isinstance(a, Herbivore)]
+        total_consumption = sum(a.food_consumption for a in herbivores)
 
         if total_consumption == 0:
             return 0
 
-        avg_consumption = total_consumption / len(self.animals)
+        avg_consumption = total_consumption / len(herbivores)
 
         return int(food_available / avg_consumption)
 
+    def calculateAnimalCapacityOmnivore(self):
+        food_available = sum(p.size for p in self.plants) + sum(a.food_level
+                                                                for a in self.animals)
+        omnivores = [a for a in self.animals if isinstance(a, Omnivore)]
+        total_consumption = sum(a.food_consumption for a in omnivores)
+
+        if total_consumption == 0:
+            return 0
+
+        avg_consumption = total_consumption / len(omnivores)
+
+        return int(food_available / avg_consumption)
+
+    def calculateAnimalCapacityCarnivore(self):
+        food_available = sum(a.food_level for a in self.animals)
+        carnivores = [a for a in self.animals if isinstance(a, Carnivore)]
+        total_consumption = sum(a.food_consumption for a in carnivores)
+
+        if total_consumption == 0:
+            return 0
+
+        avg_consumption = total_consumption / len(carnivores)
+
+        return int(food_available / avg_consumption)
+
+    def calculateAnimalCapacity(self):
+        herbivore_capacity = self.calculateAnimalCapacityHerbivores()
+        omnivore_capacity = self.calculateAnimalCapacityOmnivore()
+        carnivore_capacity = self.calculateAnimalCapacityCarnivore()
+        return herbivore_capacity + omnivore_capacity + carnivore_capacity
 
     def checkMate(self, animal1, animal2):
         return (
@@ -122,6 +155,12 @@ class Habitat:
                 if not food.alive:
                     print(
                         f"Plant {food.id} has been fully eaten")
+        elif isinstance(a, Omnivore):
+            target = a.hunt_or_search(self.animals, self.plants)
+            if isinstance(target, Animal):
+                dead_animals.append(target)
+            elif target is None:
+                print(f"Omnivore {a.id} found no food this cycle.")
 
     def handle_aging_and_mating(self, a, current_day, dead_animals,
                                 new_animals):
@@ -135,8 +174,7 @@ class Habitat:
 
         # Mating-Block 1:1 aus deiner Logik übernommen
         if a.mateable and a.gender == False:
-            if (self.calculateAnimalCapacity() - len(self.animals) > 0 or
-                    True): #TODO Kapazitätsprüfung deaktiviert
+            if self.calculateAnimalCapacity() - len(self.animals) > 0: #TODO Kapazitätsprüfung deaktiviert
                 if random.random() < 0.5:
                     print(f"Animal {a.id} is looking for a mate.")
                     partners = []
