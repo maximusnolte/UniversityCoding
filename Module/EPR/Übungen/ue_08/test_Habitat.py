@@ -11,24 +11,26 @@ from EPR.Übungen.ue_08.Plant import Plant
 class TestHabitat(unittest.TestCase):
     def setUp(self):
         self.habitat = Habitat(1000, [], [], 0)
-        self.plant1 = Plant(2,5,1,id=1, species="Fern", max_size=10)
+        self.plant1 = Plant(2, 5, 1, id=1, species="Fern", max_size=10)
         self.plant2 = Plant(1, 2, 1, id=2, species="Moss", max_size=5)
         self.animal1 = Carnivore(False, 4, gender=False, day_spawned=0,
                                  max_age=15,
                                  mating_age=3, mating_start_cooldown=10,
-                                 max_food=10, food_consumption=2, days_to_starve=2,
+                                 max_food=10, food_consumption=2,
+                                 days_to_starve=2,
                                  size_mult=1.2, healing_rate=5,
-                              id=1,
-                              species="Wolf",
-                              max_size=100)
+                                 id=1,
+                                 species="Wolf",
+                                 max_size=100)
         self.animal2 = Carnivore(False, 4, gender=True, day_spawned=0,
                                  max_age=15,
                                  mating_age=3, mating_start_cooldown=10,
-                                 max_food=10, food_consumption=2, days_to_starve=2,
+                                 max_food=10, food_consumption=2,
+                                 days_to_starve=2,
                                  size_mult=1.2, healing_rate=5,
-                              id=2,
-                              species="Wolf",
-                              max_size=100)
+                                 id=2,
+                                 species="Wolf",
+                                 max_size=100)
         self.animal3 = Herbivore(gender=True, day_spawned=0, max_age=10,
                                  mating_age=2, mating_start_cooldown=5,
                                  max_food=5,
@@ -36,6 +38,7 @@ class TestHabitat(unittest.TestCase):
                                  size_mult=1.4, healing_rate=3, id=3,
                                  species="Deer",
                                  max_size=80)
+
     def cleanup(self):
         self.habitat.despawnAnimal(self.animal1)
         self.habitat.despawnAnimal(self.animal2)
@@ -82,7 +85,6 @@ class TestHabitat(unittest.TestCase):
                          max_size=80)
         self.assertFalse(self.habitat.checkMate(self.animal1, animal3))
 
-
     def test_07_updatePlantsCycle(self):
         self.habitat.spawnPlant(self.plant1)
         initial_size = self.plant1.size
@@ -119,13 +121,13 @@ class TestHabitat(unittest.TestCase):
 
         self.animal1.current_age = 1
         self.animal1.food_level = 0
-        val = self.habitat.handle_hunting_or_eating(self.animal1, #carnivore
+        val = self.habitat.handle_hunting_or_eating(self.animal1,  # carnivore
                                                     # too small to hunt prey
-                                                     dead_animals)
+                                                    dead_animals)
         self.assertNotIn(self.animal3, dead_animals)
         self.animal1.current_age = self.animal1.max_age
         val = self.habitat.handle_hunting_or_eating(self.animal1,
-                                                     dead_animals)
+                                                    dead_animals)
         self.assertIn(self.animal3, dead_animals)
 
         # Herbivore eats plant, more tests for eating in Herbivore tests
@@ -153,14 +155,14 @@ class TestHabitat(unittest.TestCase):
         self.habitat.spawnAnimal(self.animal3)
         mock_animal_random.return_value = 0.5
         self.habitat.handle_aging_and_mating(self.animal3,
-                                                  current_day,
-                                                  dead_animals,
-                                                  new_animals)
+                                             current_day,
+                                             dead_animals,
+                                             new_animals)
         mock_animal_random.return_value = 0.4
         self.habitat.handle_aging_and_mating(self.animal3,
-                                                   current_day + 1,
-                                                   dead_animals,
-                                                   new_animals)
+                                             current_day + 1,
+                                             dead_animals,
+                                             new_animals)
         self.assertIn(self.animal3, dead_animals)
 
     @patch("EPR.Übungen.ue_08.Habitat.random.random")
@@ -175,9 +177,9 @@ class TestHabitat(unittest.TestCase):
         self.animal2.mateable = True
         mock_habitat_random.return_value = 0.3
         self.habitat.handle_aging_and_mating(self.animal1,
-                                                   current_day,
-                                                   dead_animals,
-                                                   new_animals)
+                                             current_day,
+                                             dead_animals,
+                                             new_animals)
         self.assertGreater(len(new_animals), 0)
 
         new_animals = []
@@ -213,6 +215,6 @@ class TestHabitat(unittest.TestCase):
         self.assertEqual(new_animals, [])
         self.assertEqual(new_plants, [])
 
+
 if __name__ == '__main__':
     unittest.main()
-

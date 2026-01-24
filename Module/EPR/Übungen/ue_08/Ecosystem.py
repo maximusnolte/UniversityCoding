@@ -1,3 +1,4 @@
+import contextlib
 import copy
 from time import sleep
 
@@ -11,9 +12,11 @@ from EPR.Übungen.ue_08.Plant import Plant
 
 class Ecosystem:
 
-    def __init__(self, round_speed, habitat_size, start_plants, start_animals):
+    def __init__(self, round_speed, habitat_size, start_plants,
+                 start_animals, skip_rounds):
         self.round_speed = round_speed
         self.current_round = 1
+        self.skip_rounds = skip_rounds
         self.habitat = Habitat(habitat_size, start_plants, start_animals, round_speed)
         print(f"Initial Start with: {len(start_plants)} plants and "
               f"{len(start_animals)} animals. ")
@@ -21,24 +24,30 @@ class Ecosystem:
         print(f"Animal Capacity: {self.habitat.calculateAnimalCapacity()}")
 
 
+# python
     def simulateRound(self):
-        print(f"Simulating Round {self.current_round}...")
-        self.habitat.update(self.current_round)
+        is_multiple = self.skip_rounds > 0 and self.current_round % self.skip_rounds == 0
+
+        # Update immer ausführen
+        with (contextlib.redirect_stdout(None) if not is_multiple else contextlib.ExitStack()):
+            self.habitat.update(self.current_round)
+
+        # Nur bei Vielfachen ausgeben
+        if is_multiple or self.skip_rounds == 0:
+            print(f"Simulating Round {self.current_round}...")
+            print(f"Round {self.current_round} finished.")
+            print(f"Plants: {len(self.habitat.plants)} | Animals: {len(self.habitat.animals)}")
+            print(f"Used Plant-Size: {self.habitat.calculateUsedSize()}")
+            print(f"Animal Capacity: {self.habitat.calculateAnimalCapacity()}")
+            if len(self.habitat.animals) == 0 and len(self.habitat.plants) == 0:
+                print("All life in the ecosystem has perished.")
+                return
+            print("--------------------------------------------------")
+
         self.current_round += 1
-        print(f"Round {self.current_round-1} finished.")
-        print(f"Plants: {len(self.habitat.plants)} | "
-              f"Animals: {len(self.habitat.animals)}")
-        print(f"Used Plant-Size: {self.habitat.calculateUsedSize()}")
-        print(f"Animal Capacity: {self.habitat.calculateAnimalCapacity()}")
-        if len(self.habitat.animals) == 0 and len(self.habitat.plants) == 0:
-            print("All life in the ecosystem has perished.")
-            return
-        print("--------------------------------------------------")
         sleep(self.round_speed)
 
 
-
-#TODO make it a real "game"
 
 
 if __name__ == '__main__':
@@ -105,6 +114,10 @@ if __name__ == '__main__':
     while not round_speed.replace('.', '', 1).isdigit():
         round_speed = input("Round Speed (seconds): ")
     round_speed = float(round_speed)
-    ecosystem = Ecosystem(round_speed, 100, start_plants, start_animals)
+    skip_rounds = input("Skip rounds, how many(0 is full output): ")
+    while not skip_rounds.isdigit():
+        skip_rounds = input("Skip every ___ round:(0 is full output): ")
+    skip_rounds = int(skip_rounds)
+    ecosystem = Ecosystem(round_speed, 100, start_plants, start_animals, skip_rounds)
     for _ in range(rounds):
         ecosystem.simulateRound()
