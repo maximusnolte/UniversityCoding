@@ -2,6 +2,8 @@
 This module provides the `Herbivore` class, a specialization of `Animal`
 that searches for and consumes plant-based food sources.
 """
+__author__ = "8722674, Nolte, 8729305, Dmytryszyn"
+
 import random
 
 from EPR.Übungen.ue_08.Animal import Animal

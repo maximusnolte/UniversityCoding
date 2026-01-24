@@ -4,6 +4,8 @@ that models a plant's size, regeneration, consumption by herbivores,
 omnivores and simple reproduction behavior.
 """
 
+__author__ = "8722674, Nolte, 8729305, Dmytryszyn"
+
 import random
 
 from EPR.Übungen.ue_08.LivingThing import LivingThing

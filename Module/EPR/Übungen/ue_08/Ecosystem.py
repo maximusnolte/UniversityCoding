@@ -1,3 +1,5 @@
+__author__ = "8722674, Nolte, 8729305, Dmytryszyn"
+
 import contextlib
 import copy
 from time import sleep

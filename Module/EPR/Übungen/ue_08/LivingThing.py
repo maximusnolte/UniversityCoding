@@ -3,6 +3,8 @@ This module defines the `LivingThing` class, a minimal representation
 of a living entity with an identifier, species, maximum size and alive status.
 """
 
+__author__ = "8722674, Nolte, 8729305, Dmytryszyn"
+
 class LivingThing:
     """Represent a simple living entity.
 

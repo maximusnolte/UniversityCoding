@@ -1,4 +1,12 @@
-# python
+"""
+Module containing the Habitat class which manages plants and animals in a habitat.
+The Habitat is responsible for spawning/despawning, resource calculations,
+daily update cycles (plants and animals), and interactions such as feeding,
+hunting, mating and aging.
+"""
+
+__author__ = "8722674, Nolte, 8729305, Dmytryszyn"
+
 import random
 from time import sleep
 
@@ -7,12 +15,7 @@ from EPR.Übungen.ue_08.Carnivore import Carnivore
 from EPR.Übungen.ue_08.Herbivore import Herbivore
 from EPR.Übungen.ue_08.Omnivore import Omnivore
 
-"""
-Module containing the Habitat class which manages plants and animals in a habitat.
-The Habitat is responsible for spawning/despawning, resource calculations,
-daily update cycles (plants and animals), and interactions such as feeding,
-hunting, mating and aging.
-"""
+
 
 
 class Habitat:

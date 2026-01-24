@@ -3,6 +3,9 @@ Dieses Modul definiert die Klasse `BerryBush`, eine Spezialisierung von
 `Plant`, die eine Wahrscheinlichkeit für
 giftige Beeren verwaltet.
 """
+
+__author__ = "8722674, Nolte, 8729305, Dmytryszyn"
+
 import random
 
 from EPR.Übungen.ue_08.Plant import Plant
