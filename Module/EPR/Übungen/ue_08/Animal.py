@@ -85,13 +85,14 @@ class Animal(LivingThing):
         if self.gender:
             self.mateable = False
             self.mating_cooldown = self.mating_start_cooldown
-            print(f"Animal {self.id} has mated with Animal {partner.id}., "
+            print(f"Animal {self.species}{self.id} has mated with Animal {partner.id}., "
                   f"cooldown is now {self.mating_cooldown} for self")
 
         elif partner.gender:
             partner.mateable = False
             partner.mating_cooldown = partner.mating_start_cooldown
-            print(f"Animal {self.id} has mated with Animal {partner.id}, "
+            print(f"Animal {self.species}{self.id} has mated with Animal"
+                  f" {partner.id}, "
                   f"cooldown is now {partner.mating_cooldown} for partner")
 
         gender = random.choice([True, False])

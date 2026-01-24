@@ -3,6 +3,7 @@ Dieses Modul definiert die Klasse `BerryBush`, eine Spezialisierung von
 `Plant`, die eine Wahrscheinlichkeit für
 giftige Beeren verwaltet.
 """
+import random
 
 from EPR.Übungen.ue_08.Plant import Plant
 
@@ -35,3 +36,29 @@ class BerryBush(Plant):
         super().__init__(**plant_args)
 
         self.poison_chance = poison_chance
+
+    def reproduce(self):
+        """Attempt to reproduce by creating a new Plant instance.
+
+        Reproduction is attempted only when the plant has reached
+        `max_size`. There is a probabilistic check (50% chance) to decide
+        whether a new offspring is produced. The offspring receives the
+        same parameters (species, min_size, food_value, regen_rate, max_size)
+        and an `id` of `None`.
+
+        Returns:
+            Plant | None: A new `Plant` instance if reproduction occurs,
+            otherwise `None`.
+        """
+        if self.size == self.max_size:
+            if random.random() < 0.5:
+                return self.__class__(
+                    poison_chance=self.poison_chance,
+                    id=None,
+                    min_size=self.min_size,
+                    food_value=self.food_value,
+                    regen_rate=self.regen_rate,
+                    max_size=self.max_size,
+                    species=self.species
+                )
+        return None

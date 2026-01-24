@@ -72,7 +72,12 @@ class Omnivore(Animal):
                 - The hunter instance if the hunter died as result of the hunt.
                 - `None` if no successful hunt occurred or only injuring/poisoning happened.
         """
-        if self.food_level <= self.max_food / 2:
+        if random.random() > 0.5:
+            print(f"Omnivore {self.species} {self.id} decided not to hunt "
+                  f"this "
+                  f"time.")
+            return None
+        if self.food_level <= self.max_food *0.2:
             prey = random.choice(animals)
             if len(animals) == 1:
                 print("No other animals to hunt.")
@@ -87,16 +92,19 @@ class Omnivore(Animal):
                         prey.getInjured(self.damage)
                         return None
                     else:
-                        print(f"{self.id} hunted and ate animal {prey.id}.")
+                        print(f"{self.species} {self.id} hunted and ate "
+                              f"animal {prey.id}.")
                         self.eat(prey.food_level)
                         prey.die()
                         return prey
                 else:
-                    print(f"Carnivore {self.id} failed to hunt prey {prey.id} due "
+                    print(f"Omnivore {self.species}{self.id} failed to hunt "
+                          f"prey {prey.id} "
+                          f"due "
                           f"to smaller size.")
                     return None
             elif prey.species == self.species:
-                print(f"Carnivore {self.id} cannot hunt prey {prey.id} of the "
+                print(f"Omnivore {self.species} {self.id} cannot hunt prey {prey.id} of the "
                       f"same species.")
                 return None
             else:
@@ -112,11 +120,12 @@ class Omnivore(Animal):
                 if size*1.5 <= prey_size and isinstance(prey, Carnivore):
                     prey.eat(self.food_level)
                     self.die()
-                    print(f"Carnivore {self.id} was killed by prey {prey.id} "
+                    print(f"Omnivore {self.species} {self.id} was killed by prey {prey.id} "
                           f"during a failed hunt.")
                     return self
                 return None
-        print("Carnivore is not hungry and cannot hunt.")
+        print(f"Omnivore {self.species} {self.id} is not hungry and cannot "
+              f"hunt.")
         return None
 
     def hunt_or_search(self, animals, plants):
@@ -124,3 +133,50 @@ class Omnivore(Animal):
             return self.hunt(animals)
         else:
             return self.searchFood(plants)
+
+
+    def mate(self, partner):
+        """Mate with another animal and produce an offspring instance.
+
+        The method updates mating state (`mateable` and `mating_cooldown`) for
+        the mating participant(s) and constructs a new instance of the same
+        class as the parents with averaged characteristics. The offspring is
+        returned with `id=None` and inherited species.
+
+        Args:
+            partner (Animal): The mating partner.
+
+        Returns:
+            Carnivore: A new `Carnivore` instance representing the offspring.
+        """
+        if self.gender:
+            self.mateable = False
+            self.mating_cooldown = self.mating_start_cooldown
+            print(f"Animal {self.species} {self.id} has mated with Animal"
+                  f" {partner.id}., "
+                  f"cooldown is now {self.mating_cooldown} for self")
+
+        elif partner.gender:
+            partner.mateable = False
+            partner.mating_cooldown = partner.mating_start_cooldown
+            print(f"Animal{self.species}  {self.id} has mated with Animal"
+                  f" {partner.id}, "
+                  f"cooldown is now {partner.mating_cooldown} for partner")
+
+        gender = random.choice([True, False])
+        return self.__class__(
+            id=None,
+            max_age= (self.max_age + partner.max_age) // 2,
+            size_mult= (self.size_mult + partner.size_mult) // 2,
+            food_consumption=self.food_consumption,
+            max_food=self.max_food,
+            days_to_starve=self.days_to_starve,
+            mating_start_cooldown=self.mating_start_cooldown,
+            mating_age=self.mating_age,
+            healing_rate=self.healing_rate,
+            gender=gender,
+            species=self.species,
+            day_spawned=None,
+            max_size = (self.max_size + partner.max_size) // 2,
+            damage = self.damage
+        )

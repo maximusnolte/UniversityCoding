@@ -10,7 +10,7 @@ from EPR.Übungen.ue_08.Plant import Plant
 
 class TestHabitat(unittest.TestCase):
     def setUp(self):
-        self.habitat = Habitat(size=1000)
+        self.habitat = Habitat(1000, [], [], 0)
         self.plant1 = Plant(2,5,1,id=1, species="Fern", max_size=10)
         self.plant2 = Plant(1, 2, 1, id=2, species="Moss", max_size=5)
         self.animal1 = Carnivore(False, 4, gender=False, day_spawned=0,
@@ -26,7 +26,7 @@ class TestHabitat(unittest.TestCase):
                                  mating_age=3, mating_start_cooldown=10,
                                  max_food=10, food_consumption=2, days_to_starve=2,
                                  size_mult=1.2, healing_rate=5,
-                              id=1,
+                              id=2,
                               species="Wolf",
                               max_size=100)
         self.animal3 = Herbivore(gender=True, day_spawned=0, max_age=10,
@@ -108,10 +108,11 @@ class TestHabitat(unittest.TestCase):
         self.habitat.handle_cooldowns_and_heal(self.animal1)
         self.assertGreater(self.animal1.health, 5)
 
-    def test_10_handle_hunting_or_eating(self):
+    @patch("EPR.Übungen.ue_08.Carnivore.random.random")
+    def test_10_handle_hunting_or_eating(self, mock_carnivore_random):
         # Carnivore hunts herbivore, more tests for hunting in Carnivore tests
         dead_animals = []
-
+        mock_carnivore_random.return_value = 0.5
         self.habitat.spawnAnimal(self.animal1)
         self.habitat.spawnAnimal(self.animal3)
 

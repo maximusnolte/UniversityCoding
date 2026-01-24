@@ -5,7 +5,7 @@ that searches for and consumes plant-based food sources.
 import random
 
 from EPR.Übungen.ue_08.Animal import Animal
-
+from EPR.Übungen.ue_08.BerryBush import BerryBush
 
 
 class Herbivore(Animal):
@@ -52,7 +52,12 @@ class Herbivore(Animal):
         if not plant.alive or plant.size <= 0:
             print(f"Plant {plant.id} is not available for eating.")
             return None
-
+        if isinstance(plant, BerryBush):
+            if random.random() < plant.poison_chance:
+                print(f"Herbivore {self.species} got poisoned by eating from "
+                      f"BerryBush"
+                      f" {plant.id}!")
+                self.poisoned = True
         max_food_from_plant = plant.size * plant.food_value
 
         food_taken = min(food_required, max_food_from_plant)
@@ -65,6 +70,5 @@ class Herbivore(Animal):
         plant.getEaten(size_eaten)
 
         return plant
-
 
 

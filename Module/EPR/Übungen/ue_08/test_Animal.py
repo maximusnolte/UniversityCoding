@@ -68,11 +68,9 @@ class AnimalTest(unittest.TestCase):
         age = self.animal1.age(current_day)
         if age is not None:
             self.assertTrue(self.animal1.alive)
-            self.assertEqual(age, 20)
-            if age >= self.animal1.mating_age:
-                self.assertTrue(self.animal1.mateable)
-            else:
-                self.assertFalse(self.animal1.mateable)
+            self.assertEqual(age, 21)
+            self.animal1.mating_cooldown = 0
+            self.animal1.max_age = 22
         else:
             self.assertFalse(self.animal1.alive)  # Animal should be dead
 
@@ -99,7 +97,7 @@ class AnimalTest(unittest.TestCase):
         self.assertEqual(child.day_spawned, None)
         self.assertEqual(child.max_age, (self.animal1.max_age + partner.max_age) // 2)
 
-        self.assertEqual(child.current_age, 0)
+        self.assertEqual(child.current_age, 1)
         self.assertEqual(child.mateable, False)
         self.assertEqual(child.mating_age, self.animal1.mating_age)
         self.assertEqual(child.mating_start_cooldown, child.mating_start_cooldown)

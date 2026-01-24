@@ -49,9 +49,11 @@ class TestCarnivore(unittest.TestCase):
         result = self.carnivore.hunt(self.animals)
         self.assertIsNone(result) # prey is too big
         self.carnivore.current_age = 10
+        mock_random.return_value = 0.5
         result = self.carnivore.hunt(self.animals)
         self.assertEqual(result, self.prey1)
         mock_random.return_value = 0.01
+        self.carnivore.food_level = 0
         result = self.carnivore.hunt(self.animals)
         self.assertEqual(self.prey1.poisoned, True)
         self.assertIsNone(result) #prey poisoned, due to failed hunt
