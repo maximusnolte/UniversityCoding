@@ -82,6 +82,7 @@ class TestHabitat(unittest.TestCase):
                          max_size=80)
         self.assertFalse(self.habitat.checkMate(self.animal1, animal3))
 
+
     def test_07_updatePlantsCycle(self):
         self.habitat.spawnPlant(self.plant1)
         initial_size = self.plant1.size
