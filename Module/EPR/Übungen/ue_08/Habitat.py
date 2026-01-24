@@ -1,5 +1,6 @@
 """
-Module containing the Habitat class which manages plants and animals in a habitat.
+Module containing the Habitat class which manages
+plants and animals in a habitat.
 The Habitat is responsible for spawning/despawning, resource calculations,
 daily update cycles (plants and animals), and interactions such as feeding,
 hunting, mating and aging.
@@ -16,13 +17,12 @@ from EPR.Übungen.ue_08.Herbivore import Herbivore
 from EPR.Übungen.ue_08.Omnivore import Omnivore
 
 
-
-
 class Habitat:
     """Represents a habitat that contains plants and animals.
 
     Attributes:
-        size (int): Maximum capacity/size of the habitat (units consistent with plant.size).
+        size (int): Maximum capacity/size of the habitat
+         (units consistent with plant.size).
         plants (list): List of plant objects currently in the habitat.
         animals (list): List of animal objects currently in the habitat.
     """
@@ -31,7 +31,8 @@ class Habitat:
         """Initialize a Habitat with a given size.
 
         Args:
-            size (int): The maximum available size/resource capacity of the habitat.
+            size (int): The maximum available size/resource capacity
+            of the habitat.
         """
         self.size = size
         self.plants = plants
@@ -62,7 +63,8 @@ class Habitat:
                 break
         else:
             print(
-                f"Tried to despawn plant with ID: {plant.id}, but Plant not found.")
+                f"Tried to despawn plant with ID: {plant.id}, "
+                f"but Plant not found.")
 
     def calculateUsedSize(self):
         """Calculate the total size currently used by all plants.
@@ -79,7 +81,8 @@ class Habitat:
         """Add an animal to the habitat.
 
         Args:
-            animal: Animal instance to add. Assumes the animal contains an `id`.
+            animal: Animal instance to add. Assumes the animal contains
+            an `id`.
         """
         for a in self.animals:
             if a.id == animal.id:
@@ -104,16 +107,17 @@ class Habitat:
             print(f"Tried to despawn animal with ID:{animal.id}, but Animal "
                   f"not found.")
 
-
-
     def calculateAnimalCapacityHerbivores(self):
-        """Estimate how many herbivores the habitat can sustain based on plant food.
+        """Estimate how many herbivores the habitat can sustain
+        based on plant food.
 
-        Computes total available plant food and divides by the average consumption
+        Computes total available plant food and divides by
+        the average consumption
         of herbivores currently present.
 
         Returns:
-            int: Estimated number of herbivores supportable. Returns 0 if no herbivores
+            int: Estimated number of herbivores supportable.
+            Returns 0 if no herbivores
                  or total consumption is zero.
         """
         food_available = sum(p.size for p in self.plants)
@@ -130,15 +134,18 @@ class Habitat:
     def calculateAnimalCapacityOmnivore(self):
         """Estimate how many omnivores the habitat can sustain.
 
-        Food available includes plant size plus current animal food levels (carrion/available meat).
+        Food available includes plant size plus current animal
+        food levels (carrion/available meat).
         Uses the average consumption of omnivores present.
 
         Returns:
-            int: Estimated number of omnivores supportable. Returns 0 if no omnivores
+            int: Estimated number of omnivores supportable. Returns
+            0 if no omnivores
                  or total consumption is zero.
         """
         food_available = sum(p.size for p in self.plants) + sum(a.food_level
-                                                                for a in self.animals)
+                                                                for a in
+                                                                self.animals)
         omnivores = [a for a in self.animals if isinstance(a, Omnivore)]
         total_consumption = sum(a.food_consumption for a in omnivores)
 
@@ -156,7 +163,8 @@ class Habitat:
         Uses the average consumption of carnivores present.
 
         Returns:
-            int: Estimated number of carnivores supportable. Returns 0 if no carnivores
+            int: Estimated number of carnivores supportable. Returns 0
+            if no carnivores
                  or total consumption is zero.
         """
         food_available = sum(a.food_level for a in self.animals)
@@ -212,7 +220,8 @@ class Habitat:
     def updatePlantsCycle(self):
         """Advance one growth/reproduction cycle for all plants.
 
-        Each alive plant regenerates and may reproduce. New offspring are assigned
+        Each alive plant regenerates and may reproduce. New offspring
+        are assigned
         a provisional id and are only created if there is room in the habitat.
 
         Returns:
@@ -232,7 +241,8 @@ class Habitat:
 
                 if offspring is not None:
                     offspring.id = len(self.plants) + 1
-                    if self.calculateUsedSize() + offspring.min_size <= self.size:
+                    if (self.calculateUsedSize() +
+                            offspring.min_size <= self.size):
                         new_plants.append(offspring)
                         sleep(self.round_speed)
                         print(f"Plant {p.id} has spawned offspring. with id "
@@ -256,7 +266,8 @@ class Habitat:
     def handle_starvation(self, a, dead_animals):
         """Apply starvation logic to an animal for one cycle.
 
-        Reduces `food_level` by `food_consumption`. If the animal starves (food_level <= 0),
+        Reduces `food_level` by `food_consumption`.
+        If the animal starves (food_level <= 0),
         it is marked dead and appended to `dead_animals`.
 
         Args:
@@ -264,7 +275,8 @@ class Habitat:
             dead_animals: List to append dead animals to.
 
         Returns:
-            bool: True if the animal died of starvation this cycle, False otherwise.
+            bool: True if the animal died of starvation
+            this cycle, False otherwise.
         """
         a.food_level -= a.food_consumption
         if a.food_level <= 0:
@@ -287,7 +299,8 @@ class Habitat:
     def handle_hunting_or_eating(self, a, dead_animals):
         """Let an animal perform its feeding behavior.
 
-        - Carnivores attempt to hunt other animals; successful hunts append the prey to dead_animals.
+        - Carnivores attempt to hunt other animals; successful
+        hunts append the prey to dead_animals.
         - Herbivores search for plants and consume them.
         - Omnivores will either hunt or eat plants depending on availability.
 
@@ -320,11 +333,15 @@ class Habitat:
                                 new_animals):
         """Process aging and potential mating for an animal.
 
-        - `a.age(current_day)` is called and if it returns None, the animal died of old age.
-        - If the animal is mateable and of the designated gender (male/female logic),
-          it searches for partners and may produce offspring (added to new_animals).
+        - `a.age(current_day)` is called and if it returns None,
+        the animal died of old age.
+        - If the animal is mateable and of the designated gender (
+        male/female logic),
+          it searches for partners and may produce offspring
+          (added to new_animals).
 
-        Note: A capacity check is performed before mating to avoid overpopulation.
+        Note: A capacity check is performed before mating to
+        avoid overpopulation.
 
         Args:
             a: Animal instance to process.
@@ -340,7 +357,7 @@ class Habitat:
 
         print(f"Animal {a.species} {a.id} is now {val} days old.")
 
-        if a.mateable and a.gender == False:
+        if a.mateable and not a.gender:
             if self.calculateAnimalCapacity() - len(self.animals) > 0:
                 if random.random() < 0.8:
                     print(f"Animal {a.species} {a.id} is looking for a mate.")
@@ -363,9 +380,9 @@ class Habitat:
                         f"Animal {a.species} {a.id} has mated with"
                         f" {partner.id} to produce offspring {child.id}.")
 
-
     def update_animals_cycle(self, current_day):
-        """Advance one cycle for all animals: starvation, cooldowns/healing, feeding, aging and mating.
+        """Advance one cycle for all animals: starvation, cooldowns/healing,
+        feeding, aging and mating.
 
         Iterates through animals and collects those that die or are newly born.
 
@@ -396,15 +413,13 @@ class Habitat:
             self.handle_hunting_or_eating(a, dead_animals)
             self.handle_aging_and_mating(a, current_day, dead_animals,
                                          new_animals)
-
-
         return dead_animals, new_animals
-
 
     def update(self, current_day):
         """Perform a full habitat update for the given day.
 
-        Updates plant cycles and animal cycles, then applies spawns and despawns
+        Updates plant cycles and animal cycles, then applies
+        spawns and despawns
         collected during the cycles.
 
         Args:

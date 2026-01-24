@@ -22,10 +22,11 @@ class TestHerbivore(unittest.TestCase):
         self.plant2 = Plant(1, 2, 1, id=2, species="Moss", max_size=5)
         self.plants = [self.plant1, self.plant2]
         val = self.herbivore.searchFood(self.plants)
-        self.assertIsNone(val) # Herbivore is not hungry.
+        self.assertIsNone(val)  # Herbivore is not hungry.
         self.herbivore.food_level = 0
         val = self.herbivore.searchFood(self.plants)
-        self.assertIsNotNone(val)  # Herbivore should eat something
+        self.assertIsNotNone(val)   # Herbivore should eat something
+
 
 if __name__ == '__main__':
     unittest.main()

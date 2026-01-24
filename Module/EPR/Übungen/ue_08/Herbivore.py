@@ -72,5 +72,3 @@ class Herbivore(Animal):
         plant.getEaten(size_eaten)
 
         return plant
-
-

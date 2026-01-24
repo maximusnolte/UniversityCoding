@@ -20,7 +20,8 @@ class Carnivore(Animal):
         venomous (bool): Whether this carnivore can poison prey when injuring.
         damage (int | float): Amount of damage inflicted on injured prey.
         Inherits attributes from `Animal` such as `id`, `species`, `gender`,
-        `max_size`, `food_level`, `max_food`, `size_mult`, `mating_*` fields, etc.
+        `max_size`, `food_level`, `max_food`, `size_mult`, `mating_*`
+        fields, etc.
     """
 
     def __init__(self, venomous: bool, damage, **animal_args):
@@ -50,8 +51,8 @@ class Carnivore(Animal):
           - For other prey, a higher chance to injure (and possibly poison)
             is applied, with additional special-case handling when the prey
             is a larger `Carnivore` that can kill the hunter.
-        The method updates food levels via `eat`, may call `die` or `getInjured`
-        on the prey, and prints status messages.
+        The method updates food levels via `eat`, may call `die` or `
+        getInjured`on the prey, and prints status messages.
 
         Args:
             animals (Sequence[Animal]): Sequence of candidate prey animals.
@@ -60,7 +61,8 @@ class Carnivore(Animal):
             Animal | None:
                 - The prey instance if it was successfully hunted and eaten.
                 - The hunter instance if the hunter died as result of the hunt.
-                - `None` if no successful hunt occurred or only injuring/poisoning happened.
+                - `None` if no successful hunt occurred
+                or only injuring/poisoning happened.
         """
         if self.food_level <= self.max_food * 0.3:
             prey = random.choice(animals)
@@ -89,7 +91,8 @@ class Carnivore(Animal):
                         prey.die()
                         return prey
                 else:
-                    print(f"Carnivore {self.species}{self.id} failed to hunt prey {prey.species}{prey.id} due "
+                    print(f"Carnivore {self.species}{self.id} failed to hunt "
+                          f"prey {prey.species}{prey.id} due "
                           f"to smaller size.")
                     return None
             elif prey.species == self.species:
@@ -101,8 +104,8 @@ class Carnivore(Animal):
                 if size > prey_size:
                     if random.random() < 0.4:
                         prey.getInjured(self.damage)
-                        if (self.venomous and isinstance(prey, Carnivore) and not
-                        prey.venomous):
+                        if (self.venomous and isinstance(prey, Carnivore)
+                                and not prey.venomous):
                             prey.poisoned = True
                             print(f"Prey {prey.species}{prey.id} has been "
                                   f"poisoned by "
@@ -153,8 +156,8 @@ class Carnivore(Animal):
         gender = random.choice([True, False])
         return self.__class__(
             id=None,
-            max_age= (self.max_age + partner.max_age) // 2,
-            size_mult= (self.size_mult + partner.size_mult) // 2,
+            max_age=(self.max_age + partner.max_age) // 2,
+            size_mult=(self.size_mult + partner.size_mult) // 2,
             food_consumption=self.food_consumption,
             max_food=self.max_food,
             days_to_starve=self.days_to_starve,
@@ -164,7 +167,7 @@ class Carnivore(Animal):
             gender=gender,
             species=self.species,
             day_spawned=None,
-            max_size = (self.max_size + partner.max_size) // 2,
-            venomous = self.venomous,
-            damage = self.damage
+            max_size=(self.max_size + partner.max_size) // 2,
+            venomous=self.venomous,
+            damage=self.damage
         )

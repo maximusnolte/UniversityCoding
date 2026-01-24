@@ -37,7 +37,8 @@ class Plant(LivingThing):
         Args:
             min_size (int | float): Minimum size before plant dies.
             food_value (int | float): Food amount per unit size.
-            regen_rate (int | float): Amount to increase `size` on regeneration.
+            regen_rate (int | float): Amount to increase `size` on
+            regeneration.
             **living_thing_args: Keyword arguments forwarded to `LivingThing`
                 (for example `id`, `species`, `max_size`).
 
@@ -49,7 +50,6 @@ class Plant(LivingThing):
         self.food_value = food_value
         self.regen_rate = regen_rate
         super().__init__(**living_thing_args)
-
 
     def regenerate(self):
         """Increase the plant's size by `regen_rate` up to `max_size` if alive.

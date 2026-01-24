@@ -14,7 +14,8 @@ from EPR.Übungen.ue_08.Plant import Plant
 class BerryBush(Plant):
     """Repräsentiert einen Beerstrauch.
 
-    Ein `BerryBush` erweitert `Plant` um eine Wahrscheinlichkeit, dass eine Beere giftig ist.
+    Ein `BerryBush` erweitert `Plant` um eine Wahrscheinlichkeit,
+    dass eine Beere giftig ist.
 
     Attribute:
         poison_chance (float): Wahrscheinlichkeit im Bereich 0.0–1.0, dass

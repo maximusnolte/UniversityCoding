@@ -7,8 +7,8 @@ from EPR.Übungen.ue_08.Animal import Animal
 
 class AnimalTest(unittest.TestCase):
     def setUp(self):
-        self.animal1 = Animal( False, 0, 15, 3, 10, 10, 2, 2, 1.2, 5,
-                               id = 1,
+        self.animal1 = Animal(False, 0, 15, 3, 10, 10, 2, 2, 1.2, 5,
+                               id=1,
                                species="Wolf",
                                max_size=100)
 
@@ -34,7 +34,8 @@ class AnimalTest(unittest.TestCase):
         # should die if damage exceeds current health
         self.animal1.getInjured(70)
         self.assertEqual(self.animal1.health, 0)
-        self.assertEqual(self.animal1.alive, False)# Assuming die() sets
+        self.assertEqual(self.animal1.alive, False)
+        # Assuming die() sets
         # health to 0
 
     def test_heal(self):
@@ -65,7 +66,6 @@ class AnimalTest(unittest.TestCase):
 
     def test_age(self):
         # should age correctly and set mateable status
-        #TODO Random Tests-Override
         current_day = 20
         age = self.animal1.age(current_day)
         if age is not None:
@@ -78,8 +78,8 @@ class AnimalTest(unittest.TestCase):
 
     def test_mate(self):
         self.animal1.mateable = True
-        partner = Animal( True, 0, 15, 3, 10, 10, 2, 2, 1.2, 5,
-                          id = 2,
+        partner = Animal(True, 0, 15, 3, 10, 10, 2, 2, 1.2, 5,
+                          id=2,
                           species="Wolf",
                           max_size=100)
         partner.mateable = True
@@ -97,14 +97,15 @@ class AnimalTest(unittest.TestCase):
         self.assertEqual(child.food_consumption, self.animal1.food_consumption)
         self.assertEqual(child.days_to_starve, self.animal1.days_to_starve)
         self.assertEqual(child.day_spawned, None)
-        self.assertEqual(child.max_age, (self.animal1.max_age + partner.max_age) // 2)
+        self.assertEqual(child.max_age, (self.animal1.max_age +
+                                         partner.max_age) // 2)
 
         self.assertEqual(child.current_age, 1)
         self.assertEqual(child.mateable, False)
         self.assertEqual(child.mating_age, self.animal1.mating_age)
-        self.assertEqual(child.mating_start_cooldown, child.mating_start_cooldown)
+        self.assertEqual(child.mating_start_cooldown,
+                         child.mating_start_cooldown)
+
 
 if __name__ == '__main__':
     unittest.main()
-
-

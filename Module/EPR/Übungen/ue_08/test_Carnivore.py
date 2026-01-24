@@ -12,12 +12,14 @@ class TestCarnivore(unittest.TestCase):
         self.carnivore = Carnivore(True, 4, gender=False, day_spawned=0,
                                  max_age=15,
                                  mating_age=3, mating_start_cooldown=10,
-                                 max_food=10, food_consumption=2, days_to_starve=2,
+                                 max_food=10, food_consumption=2,
+                                   days_to_starve=2,
                                  size_mult=1.2, healing_rate=5,
                               id=1,
                               species="Komododragon",
                               max_size=100)
-        self.carnivore2 = Carnivore(True, 4, gender=False, day_spawned=0,
+        self.carnivore2 = Carnivore(True, 4, gender=False,
+                                    day_spawned=0,
                                    max_age=15,
                                    mating_age=3, mating_start_cooldown=10,
                                    max_food=10, food_consumption=2,
@@ -36,7 +38,6 @@ class TestCarnivore(unittest.TestCase):
 
         self.animals = [self.carnivore, self.carnivore2, self.prey1]
 
-
     @patch("EPR.Übungen.ue_08.Carnivore.random.choice")
     @patch("EPR.Übungen.ue_08.Carnivore.random.random")
     def test_hunt(self, mock_random, mock_choice):
@@ -46,10 +47,10 @@ class TestCarnivore(unittest.TestCase):
         self.assertIsNone(result)  # not hungry
         self.carnivore.food_level = 0
         result = self.carnivore.hunt([self.carnivore])
-        self.assertIsNone(result) # no prey available
+        self.assertIsNone(result)  # no prey available
         mock_choice.return_value = self.prey1
         result = self.carnivore.hunt(self.animals)
-        self.assertIsNone(result) # prey is too big
+        self.assertIsNone(result)  # prey is too big
         self.carnivore.current_age = 10
         mock_random.return_value = 0.5
         result = self.carnivore.hunt(self.animals)
@@ -58,14 +59,14 @@ class TestCarnivore(unittest.TestCase):
         self.carnivore.food_level = 0
         result = self.carnivore.hunt(self.animals)
         self.assertEqual(self.prey1.poisoned, True)
-        self.assertIsNone(result) #prey poisoned, due to failed hunt
+        self.assertIsNone(result)  # prey poisoned, due to failed hunt
         mock_choice.return_value = self.carnivore2
         result = self.carnivore.hunt(self.animals)
-        self.assertIsNone(result) #cannot hunt same species
+        self.assertIsNone(result)  # cannot hunt same species
         self.carnivore.current_age = 1
         self.carnivore2.species = "Wolf"
         self.carnivore2.size_mult = 100
-        result = self.carnivore.hunt(self.animals) #failed hunt against bigger carnivore
+        result = self.carnivore.hunt(self.animals)
+        # failed hunt against bigger carnivore
         self.assertEqual(result, self.carnivore)
         self.assertFalse(self.carnivore.alive)
-

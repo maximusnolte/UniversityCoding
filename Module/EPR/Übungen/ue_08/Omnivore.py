@@ -62,7 +62,8 @@ class Omnivore(Animal):
           - For other prey, a higher chance to injure (and possibly poison)
             is applied, with additional special-case handling when the prey
             is a larger `Carnivore` that can kill the hunter.
-        The method updates food levels via `eat`, may call `die` or `getInjured`
+        The method updates food levels via `eat`, may call `die` or
+        `getInjured`
         on the prey, and prints status messages.
 
         Args:
@@ -72,7 +73,8 @@ class Omnivore(Animal):
             Animal | None:
                 - The prey instance if it was successfully hunted and eaten.
                 - The hunter instance if the hunter died as result of the hunt.
-                - `None` if no successful hunt occurred or only injuring/poisoning happened.
+                - `None` if no successful hunt occurred or only
+                injuring/poisoning happened.
         """
         if random.random() > 0.5:
             print(f"Omnivore {self.species} {self.id} decided not to hunt "
@@ -106,7 +108,8 @@ class Omnivore(Animal):
                           f"to smaller size.")
                     return None
             elif prey.species == self.species:
-                print(f"Omnivore {self.species} {self.id} cannot hunt prey {prey.id} of the "
+                print(f"Omnivore {self.species} {self.id} cannot hunt "
+                      f"prey {prey.id} of the "
                       f"same species.")
                 return None
             else:
@@ -122,7 +125,8 @@ class Omnivore(Animal):
                 if size*1.5 <= prey_size and isinstance(prey, Carnivore):
                     prey.eat(self.food_level)
                     self.die()
-                    print(f"Omnivore {self.species} {self.id} was killed by prey {prey.id} "
+                    print(f"Omnivore {self.species} {self.id} was killed "
+                          f"by prey {prey.id} "
                           f"during a failed hunt.")
                     return self
                 return None
@@ -135,7 +139,6 @@ class Omnivore(Animal):
             return self.hunt(animals)
         else:
             return self.searchFood(plants)
-
 
     def mate(self, partner):
         """Mate with another animal and produce an offspring instance.
@@ -168,8 +171,8 @@ class Omnivore(Animal):
         gender = random.choice([True, False])
         return self.__class__(
             id=None,
-            max_age= (self.max_age + partner.max_age) // 2,
-            size_mult= (self.size_mult + partner.size_mult) // 2,
+            max_age=(self.max_age + partner.max_age) // 2,
+            size_mult=(self.size_mult + partner.size_mult) // 2,
             food_consumption=self.food_consumption,
             max_food=self.max_food,
             days_to_starve=self.days_to_starve,
@@ -179,6 +182,6 @@ class Omnivore(Animal):
             gender=gender,
             species=self.species,
             day_spawned=None,
-            max_size = (self.max_size + partner.max_size) // 2,
-            damage = self.damage
+            max_size=(self.max_size + partner.max_size) // 2,
+            damage=self.damage
         )
