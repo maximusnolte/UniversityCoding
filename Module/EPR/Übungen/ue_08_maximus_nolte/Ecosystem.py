@@ -4,12 +4,12 @@ import contextlib
 import copy
 from time import sleep
 
-from EPR.Übungen.ue_08.BerryBush import BerryBush
-from EPR.Übungen.ue_08.Carnivore import Carnivore
-from EPR.Übungen.ue_08.Habitat import Habitat
-from EPR.Übungen.ue_08.Herbivore import Herbivore
-from EPR.Übungen.ue_08.Omnivore import Omnivore
-from EPR.Übungen.ue_08.Plant import Plant
+from EPR.Übungen.ue_08_maximus_nolte.BerryBush import BerryBush
+from EPR.Übungen.ue_08_maximus_nolte.Carnivore import Carnivore
+from EPR.Übungen.ue_08_maximus_nolte.Habitat import Habitat
+from EPR.Übungen.ue_08_maximus_nolte.Herbivore import Herbivore
+from EPR.Übungen.ue_08_maximus_nolte.Omnivore import Omnivore
+from EPR.Übungen.ue_08_maximus_nolte.Plant import Plant
 
 
 class Ecosystem:
@@ -120,9 +120,9 @@ if __name__ == '__main__':
     while not round_speed.replace('.', '', 1).isdigit():
         round_speed = input("Round Speed (seconds): ")
     round_speed = float(round_speed)
-    skip_rounds = input("Skip rounds, how many(0 is full output): ")
+    skip_rounds = input("Skip rounds, how many(1 is full output): ")
     while not skip_rounds.isdigit():
-        skip_rounds = input("Skip every ___ round:(0 is full output): ")
+        skip_rounds = input("Skip every ___ round:(1 is full output): ")
     skip_rounds = int(skip_rounds)
     ecosystem = Ecosystem(round_speed, 100, start_plants,
                           start_animals, skip_rounds)

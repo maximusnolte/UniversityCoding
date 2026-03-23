@@ -3,8 +3,8 @@ __author__ = "8722674, Nolte, 8729305, Dmytryszyn"
 import unittest
 from unittest.mock import patch
 
-from EPR.Übungen.ue_08.Carnivore import Carnivore
-from EPR.Übungen.ue_08.Herbivore import Herbivore
+from EPR.Übungen.ue_08_maximus_nolte.Carnivore import Carnivore
+from EPR.Übungen.ue_08_maximus_nolte.Herbivore import Herbivore
 
 
 class TestCarnivore(unittest.TestCase):
@@ -38,8 +38,8 @@ class TestCarnivore(unittest.TestCase):
 
         self.animals = [self.carnivore, self.carnivore2, self.prey1]
 
-    @patch("EPR.Übungen.ue_08.Carnivore.random.choice")
-    @patch("EPR.Übungen.ue_08.Carnivore.random.random")
+    @patch("EPR.Übungen.ue_08_maximus_nolte.Carnivore.random.choice")
+    @patch("EPR.Übungen.ue_08_maximus_nolte.Carnivore.random.random")
     def test_hunt(self, mock_random, mock_choice):
         self.carnivore.food_level = self.carnivore.max_food
         mock_random.return_value = 0.2

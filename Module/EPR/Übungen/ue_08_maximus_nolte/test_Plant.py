@@ -2,7 +2,7 @@ __author__ = "8722674, Nolte, 8729305, Dmytryszyn"
 
 import unittest
 
-from EPR.Übungen.ue_08.Plant import Plant
+from EPR.Übungen.ue_08_maximus_nolte.Plant import Plant
 
 
 class PlantTest(unittest.TestCase):

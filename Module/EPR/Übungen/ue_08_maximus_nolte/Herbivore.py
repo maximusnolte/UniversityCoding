@@ -6,8 +6,8 @@ __author__ = "8722674, Nolte, 8729305, Dmytryszyn"
 
 import random
 
-from EPR.Übungen.ue_08.Animal import Animal
-from EPR.Übungen.ue_08.BerryBush import BerryBush
+from EPR.Übungen.ue_08_maximus_nolte.Animal import Animal
+from EPR.Übungen.ue_08_maximus_nolte.BerryBush import BerryBush
 
 
 class Herbivore(Animal):

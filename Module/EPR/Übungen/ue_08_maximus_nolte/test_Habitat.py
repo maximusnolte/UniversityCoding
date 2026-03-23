@@ -3,11 +3,11 @@ __author__ = "8722674, Nolte, 8729305, Dmytryszyn"
 import unittest
 from unittest.mock import patch
 
-from EPR.Übungen.ue_08.Animal import Animal
-from EPR.Übungen.ue_08.Carnivore import Carnivore
-from EPR.Übungen.ue_08.Habitat import Habitat
-from EPR.Übungen.ue_08.Herbivore import Herbivore
-from EPR.Übungen.ue_08.Plant import Plant
+from EPR.Übungen.ue_08_maximus_nolte.Animal import Animal
+from EPR.Übungen.ue_08_maximus_nolte.Carnivore import Carnivore
+from EPR.Übungen.ue_08_maximus_nolte.Habitat import Habitat
+from EPR.Übungen.ue_08_maximus_nolte.Herbivore import Herbivore
+from EPR.Übungen.ue_08_maximus_nolte.Plant import Plant
 
 
 class TestHabitat(unittest.TestCase):
@@ -113,7 +113,7 @@ class TestHabitat(unittest.TestCase):
         self.habitat.handle_cooldowns_and_heal(self.animal1)
         self.assertGreater(self.animal1.health, 5)
 
-    @patch("EPR.Übungen.ue_08.Carnivore.random.random")
+    @patch("EPR.Übungen.ue_08_maximus_nolte.Carnivore.random.random")
     def test_10_handle_hunting_or_eating(self, mock_carnivore_random):
         # Carnivore hunts herbivore, more tests for hunting in Carnivore tests
         dead_animals = []
@@ -147,7 +147,7 @@ class TestHabitat(unittest.TestCase):
         self.assertGreater(self.animal3.food_level, 0)
         self.assertFalse(self.plant1.alive)
 
-    @patch("EPR.Übungen.ue_08.Animal.random.random")
+    @patch("EPR.Übungen.ue_08_maximus_nolte.Animal.random.random")
     def test_11_handle_aging(self, mock_animal_random):
         # More tests for aging in Animal tests
         dead_animals = []
@@ -167,7 +167,7 @@ class TestHabitat(unittest.TestCase):
                                              new_animals)
         self.assertIn(self.animal3, dead_animals)
 
-    @patch("EPR.Übungen.ue_08.Habitat.random.random")
+    @patch("EPR.Übungen.ue_08_maximus_nolte.Habitat.random.random")
     def test_12_handle_mating(self, mock_habitat_random):
         dead_animals = []
         new_animals = []

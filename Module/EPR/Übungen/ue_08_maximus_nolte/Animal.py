@@ -2,7 +2,7 @@ __author__ = "8722674, Nolte, 8729305, Dmytryszyn"
 
 import random
 
-from EPR.Übungen.ue_08.LivingThing import LivingThing
+from EPR.Übungen.ue_08_maximus_nolte.LivingThing import LivingThing
 
 
 class Animal(LivingThing):

@@ -11,10 +11,10 @@ __author__ = "8722674, Nolte, 8729305, Dmytryszyn"
 import random
 from time import sleep
 
-from EPR.Übungen.ue_08.Animal import Animal
-from EPR.Übungen.ue_08.Carnivore import Carnivore
-from EPR.Übungen.ue_08.Herbivore import Herbivore
-from EPR.Übungen.ue_08.Omnivore import Omnivore
+from EPR.Übungen.ue_08_maximus_nolte.Animal import Animal
+from EPR.Übungen.ue_08_maximus_nolte.Carnivore import Carnivore
+from EPR.Übungen.ue_08_maximus_nolte.Herbivore import Herbivore
+from EPR.Übungen.ue_08_maximus_nolte.Omnivore import Omnivore
 
 
 class Habitat:
